@@ -54,6 +54,62 @@
       border: 1px solid var(--border-color);
     }
 
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .topbar-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #22c55e, #38bdf8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+      color: #020617;
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.18);
+    }
+
+    .topbar-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .topbar-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* переробимо старий .theme-toggle під праву частину */
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    @media (max-width: 640px) {
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+    }
+
+
     h1, h2, h3 {
       margin-top: 0;
       color: var(--text-main);
@@ -229,15 +285,26 @@
 </head>
 <body>
 <div class="container">
-  <div class="theme-toggle">
-    <button id="themeToggle">🌑 Темна тема</button>
-  </div>
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-logo">MT</div>
+      <div>
+        <div class="topbar-title">TRIAL eTSecutive — калькулятор системи TS-603</div>
+        <div class="topbar-subtitle">
+          Настінна гардеробна / гардеробна система на профілі TS-603
+        </div>
+      </div>
+    </div>
+    <div class="theme-toggle">
+      <button id="themeToggle">🌑 Темна тема</button>
+    </div>
+  </header>
 
-  <h1>TRIAL eTSecutive — калькулятор системи TS-603</h1>
   <p class="muted">
     Прототип розрахунку: TS-603, TS-80, TS-100, SE-963, A10.723, TS-50 (P300/P500), TS-70.
     Логіка: <strong>Lvert = Height − 19мм, Nvert = Sections + 1, профіль 6100мм.</strong>
   </p>
+
 
   <div class="grid" style="margin-top: 16px;">
     <!-- ВХІДНІ ПАРАМЕТРИ -->
