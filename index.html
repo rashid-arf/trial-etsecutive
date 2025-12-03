@@ -1,1393 +1,2367 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <title>TRIAL eTSecutive Calculator</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root {
-      /* Світла тема за замовчуванням */
-      --bg-body: #f5f5f7;
-      --bg-container: #ffffff;
-      --text-main: #111827;
-      --text-muted: #6b7280;
-      --card-bg: #ffffff;
-      --border-color: #e5e7eb;
-      --table-header-bg: #f3f4f6;
-      --input-bg: #ffffff;
-      --shadow-main: 0 25px 40px rgba(15, 23, 42, 0.12);
-    }
+    <meta charset="UTF-8" />
+    <title>eTSecutive — система TS-603 | MT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        :root {
+            --bg: #f4f5fb;
+            --bg-elevated: #ffffff;
+            --bg-hero: #f9fafb;
+            --text: #020617;
+            --text-main: #141414;
+            --text-muted: #555;
+            --accent: #16a34a;
+            --accent-soft: rgba(22, 163, 74, 0.08);
+            --border: rgba(148, 163, 184, 0.4);
+            --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.12);
+            --radius-lg: 22px;
+        }
+        .dark-theme {
+            --bg: #020617;
+            --bg-elevated: #020617;
+            --bg-hero: #020617;
+            --text: #e5e7eb;
+            --text-main: #ffffff;
+            --text-muted: #cfcfcf;
+            --accent: #22c55e;
+            --accent-soft: rgba(34, 197, 94, 0.12);
+            --border: rgba(148, 163, 184, 0.25);
+            --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.9);
+        }
 
-    :root.theme-dark {
-      --bg-body: #0f172a;
-      --bg-container: #020617;
-      --text-main: #e5e7eb;
-      --text-muted: #9ca3af;
-      --card-bg: #020617;
-      --border-color: #1f2937;
-      --table-header-bg: #020617;
-      --input-bg: #020617;
-      --shadow-main: 0 25px 40px rgba(0, 0, 0, 0.6);
-    }
+        * { box-sizing: border-box; }
 
-    * {
-      box-sizing: border-box;
-    }
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+            "Segoe UI", sans-serif;
+            background:
+                    radial-gradient(circle at top left, #e0f2fe 0, transparent 40%),
+                    radial-gradient(circle at bottom right, #dcfce7 0, transparent 45%),
+                    var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
 
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg-body);
-      color: var(--text-main);
-      margin: 0;
-      padding: 24px;
-      display: flex;
-      justify-content: center;
-    }
+        .page {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 32px 16px 48px;
+        }
 
-    .container {
-      max-width: 1100px;
-      width: 100%;
-      background: var(--bg-container);
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: var(--shadow-main);
-      border: 1px solid var(--border-color);
-    }
+        /* TOPBAR */
 
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 18px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--border-color);
-    }
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 12px 35px rgba(15, 23, 42, 0.12);
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            backdrop-filter: blur(10px);
+            margin-bottom: 28px;
+        }
+        .dark-theme .topbar {
+            background: rgba(15, 23, 42, 0.92);
+            border-color: rgba(148, 163, 184, 0.35);
+        }
 
-    .topbar-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
 
-    .topbar-logo {
-      width: 36px;
-      height: 36px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #22c55e, #38bdf8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 16px;
-      color: #020617;
-      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.18);
-    }
+        .topbar-logo {
+            width: 42px;
+            height: 42px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ef4444;
+        }
 
-    .topbar-title {
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: 0.01em;
-    }
+        .topbar-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
 
-    .topbar-subtitle {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
+        .topbar-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
 
-    /* переробимо старий .theme-toggle під праву частину */
-    .theme-toggle {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-    }
+        .topbar-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
 
-    @media (max-width: 640px) {
-      .topbar {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-      }
-    }
+        .theme-toggle button {
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.6);
+            padding: 8px 14px;
+            font-size: 13px;
+            background: rgba(15, 23, 42, 0.03);
+            color: var(--text);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .theme-toggle button span {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: #8b5cf6;
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.2);
+        }
+
+        /* HERO */
+
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 60px 40px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #ffffff 0%, #f5f7fa 100%);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .dark-theme .hero {
+            background: linear-gradient(135deg, #020617 0%, #020617 100%);
+            box-shadow: 0 18px 45px rgba(0,0,0,0.7);
+        }
+
+        .hero-title {
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 1.2;
+            color: var(--text-main);
+            margin-bottom: 18px;
+        }
+        .dark-theme .hero-title {
+            color: #f9fafb;
+        }
+
+        .hero-sub {
+            font-size: 18px;
+            line-height: 1.55;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+        .dark-theme .hero-sub {
+            color: #e5e7eb;
+        }
+
+        .hero-content {
+            max-width: 50%;
+        }
+
+        .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .hero-tags span {
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            opacity: 1;
+            background: #f0f2f5;
+            border: 1px solid rgba(148,163,184,0.6);
+        }
+        .dark-theme .hero-tags span {
+            background: rgba(15,23,42,0.4);
+            color: #e5e7eb;
+            border-color: rgba(148,163,184,0.7);
+        }
+
+        .btn-green {
+            padding: 12px 22px;
+            background: #00b05a;
+            color: #ffffff;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-green:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 30px rgba(34,197,94,0.45);
+        }
+
+        .btn-white {
+            padding: 12px 22px;
+            background: #ffffff;
+            border-radius: 10px;
+            border: 1px solid #dce0e5;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .btn-white:hover {
+            background: rgba(255,255,255,0.9);
+        }
+        .dark-theme .btn-white {
+            background: rgba(15,23,42,0.95);
+            color: #e5e7eb;
+            border-color: rgba(148,163,184,0.6);
+        }
+        .dark-theme .btn-white:hover {
+            background: rgba(15,23,42,1);
+        }
+
+        .hero-image img {
+            width: 460px;
+            height: auto;
+            border-radius: 18px;
+            object-fit: cover;
+            box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+        }
+
+        /* Для великих екранів */
+        @media (min-width: 1400px) {
+            .hero-image img { width: 520px; }
+        }
+
+        /* Для мобільних */
+        @media (max-width: 900px) {
+            .hero {
+                flex-direction: column-reverse;
+                text-align: center;
+            }
+            .hero-content {
+                max-width: 100%;
+            }
+        }
+
+        /* SECTIONS */
+
+        section {
+            margin-bottom: 48px;
+        }
+
+        .section-headline {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+        .section-lead {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 18px;
+            max-width: 720px;
+        }
+
+        .three-cols {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            border-radius: 18px;
+            padding: 16px 16px 14px;
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(148, 163, 184, 0.45);
+        }
+        .dark-theme .card {
+            background: rgba(15, 23, 42, 0.9);
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-main);
+        }
+        .card-body {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .check-list {
+            padding-left: 16px;
+            margin: 8px 0 0;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .check-list li { margin-bottom: 4px; }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            padding: 4px 9px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .ts603-advantages {
+            margin-top: 80px;
+        }
+
+        .ts603-advantages .section-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 15px;
+        }
+
+        .ts603-advantages .section-sub {
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            max-width: 750px;
+            line-height: 1.55;
+        }
+
+        .adv-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 28px;
+        }
+
+        .adv-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 28px;
+            border: 1px solid var(--card-border);
+            box-shadow: var(--card-shadow);
+            transition: 0.25s;
+        }
+
+        .adv-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .adv-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .adv-tag.green { background: #dfffe0; color: #0a7d24; }
+        .adv-tag.blue { background: #e0f1ff; color: #0b61c9; }
+        .adv-tag.orange { background: #fff3df; color: #d27a00; }
+        .adv-tag.purple { background: #f2e7ff; color: #7935d1; }
+
+        .adv-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .adv-card p {
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 18px;
+        }
+
+        .adv-img {
+            width: 100%;
+
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+            background: #fff;
+        }
+
+        /* ---- Технічні схеми ---- */
+
+        .tech-section {
+            margin-top: 80px;
+        }
+
+        .tech-section .section-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        .tech-section .section-sub {
+            color: var(--text-muted);
+            margin-bottom: 28px;
+            max-width: 820px;
+            line-height: 1.55;
+        }
+
+        .accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .accordion-item {
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--card-border);
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            width: 100%;
+            padding: 16px 20px;
+            background: transparent;
+            border: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+        }
+
+        .accordion-header:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .accordion-icon {
+            font-size: 18px;
+            transition: transform 0.2s ease;
+        }
+
+        .accordion-item.open .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-panel {
+            display: none;
+            padding: 0 20px 18px 20px;
+            gap: 20px;
+        }
+
+        .accordion-item.open .accordion-panel {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+        }
+
+        .accordion-text ul {
+            padding-left: 18px;
+            margin: 10px 0 0;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .accordion-image {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .tech-img {
+            max-width: 100%;
+            max-height: 260px;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+            background: #fff;
+            object-fit: contain;
+        }
+
+        /* Адаптив */
+        @media (max-width: 900px) {
+            .accordion-item.open .accordion-panel {
+                grid-template-columns: 1fr;
+            }
+
+            .accordion-image {
+                justify-content: center;
+                margin-top: 10px;
+            }
+        }
+
+        /* ---- Невеликий твік для зображень у блоці "Переваги" ---- */
+
+        .adv-img {
+            display: block;
+            margin: 10px auto 0;
+            max-height: 220px;
+            width: 100%;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        /* CONFIG CARDS */
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+        .config-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .config-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        .config-card-footer {
+            margin-top: 8px;
+        }
+        .tag-small {
+            display: inline-block;
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.03);
+            border: 1px solid rgba(148, 163, 184, 0.4);
+        }
+
+        /* CALCULATOR WRAPPER */
+
+        .calc-wrapper {
+            border-radius: 24px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(148, 163, 184, 0.45);
+            box-shadow: var(--shadow-soft);
+        }
+        .dark-theme .calc-wrapper {
+            background: rgba(15, 23, 42, 0.96);
+        }
+
+        /* FAQ */
+
+        .faq-item {
+            border-radius: 14px;
+            padding: 12px 14px;
+            border: 1px solid rgba(148, 163, 184, 0.55);
+            background: rgba(255, 255, 255, 0.95);
+            margin-bottom: 8px;
+        }
+        .dark-theme .faq-item {
+            background: rgba(15, 23, 42, 0.9);
+        }
+        .faq-q {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .faq-a {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .feature-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: contain; /* або cover — вибереш що виглядає краще */
+            border-radius: 12px;
+            background: #f5f5f7;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
 
 
-    h1, h2, h3 {
-      margin-top: 0;
-      color: var(--text-main);
-    }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px;
-    }
+        /* CTA FOOTER */
 
-    .card {
-      background: var(--card-bg);
-      border-radius: 12px;
-      padding: 16px;
-      border: 1px solid var(--border-color);
-    }
+        .cta-final {
+            border-radius: 24px;
+            padding: 20px 20px 18px;
+            background: linear-gradient(135deg, #16a34a, #22c55e);
+            color: #f9fafb;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 12px;
+        }
+        .cta-final h2 {
+            margin: 0 0 4px;
+            font-size: 20px;
+        }
+        .cta-final p {
+            margin: 0;
+            font-size: 13px;
+            opacity: 0.95;
+        }
+        .cta-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .btn-cta {
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            padding: 9px 14px;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-cta.primary {
+            background: #f9fafb;
+            color: #16a34a;
+        }
+        .btn-cta.ghost {
+            background: rgba(15, 23, 42, 0.12);
+            color: #ecfdf5;
+            border: 1px solid rgba(226, 232, 240, 0.4);
+        }
 
-    label {
-      display: block;
-      font-size: 13px;
-      margin-bottom: 4px;
-      color: var(--text-muted);
-    }
+        /* RESPONSIVE */
 
-    input[type="number"],
-    select {
-      width: 100%;
-      padding: 8px 10px;
-      border-radius: 8px;
-      border: 1px solid #d1d5db;
-      background: var(--input-bg);
-      color: var(--text-main);
-      font-size: 14px;
-      box-sizing: border-box;
-    }
+        @media (max-width: 900px) {
+            .three-cols,
+            .config-grid,
+            .grid-2 { grid-template-columns: minmax(0, 1fr); }
+            .topbar {
+                border-radius: 20px;
+                flex-direction: column;
+                gap: 8px;
+                align-items: flex-start;
+            }
+        }
 
-    input[type="number"]:focus,
-    select:focus {
-      outline: none;
-      border-color: #38bdf8;
-      box-shadow: 0 0 0 1px #38bdf8;
-    }
+        @media (max-width: 600px) {
+            .page { padding-inline: 12px; }
+        }
 
-    .btn {
-      margin-top: 12px;
-      padding: 10px 18px;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 600;
-      background: linear-gradient(135deg, #38bdf8, #22c55e);
-      color: #020617;
-    }
+        /* ===== базові стилі калькулятора (як у твоєму index.html) ===== */
 
-    .btn:active {
-      transform: translateY(1px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-    }
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 18px;
+        }
+        @media (max-width: 960px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        label {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 4px;
+            color: var(--text-main);
+        }
+        input, select {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(148,163,184,0.6);
+            font-size: 14px;
+            background: #ffffff;
+        }
+        .dark-theme input,
+        .dark-theme select {
+            background: #020617;
+            color: #e5e7eb;
+            border-color: rgba(148,163,184,0.6);
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        .muted {
+            color: var(--text-muted);
+        }
+        .btn {
+            margin-top: 14px;
+            padding: 10px 18px;
+            border-radius: 999px;
+            border: none;
+            background: #16a34a;
+            color: #ffffff;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        table th,
+        table td {
+            padding: 6px 8px;
+            border-bottom: 1px solid rgba(148,163,184,0.4);
+            text-align: left;
+        }
+        table thead th {
+            background: rgba(148,163,184,0.12);
+        }
+        .single-image-wrapper {
+            width: 100%;
+            padding: 0 16px 16px;
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 12px;
-      font-size: 13px;
-    }
-
-    th, td {
-      padding: 6px 8px;
-      text-align: right;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    th:first-child, td:first-child {
-      text-align: left;
-    }
-
-    th {
-      background: var(--table-header-bg);
-      position: sticky;
-      top: 0;
-      z-index: 1;
-    }
-
-    tfoot td {
-      font-weight: 600;
-      border-top: 2px solid var(--border-color);
-    }
-
-    .muted {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: rgba(56,189,248,0.08);
-      border: 1px solid rgba(56,189,248,0.4);
-      font-size: 11px;
-      color: var(--text-main);
-      margin-bottom: 6px;
-    }
-
-    .single-image-wrapper {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      padding: 0 16px 16px 16px;
-    }
-
-    .single-image {
-      display: block;
-      width: 90%;
-      max-width: 820px;
-      margin: auto 4px auto;
-      border-radius: 16px;
-      border: 1px solid var(--border-color);
-      object-fit: cover;
-      box-shadow:
-              0 0 0 1px rgba(255,255,255,0.03),
-              0 4px 12px rgba(0,0,0,0.25);
-      transition: 0.25s ease-in-out;
-    }
-
-    .single-image:hover {
-      transform: scale(1.015);
-      box-shadow:
-              0 0 0 1px rgba(255,255,255,0.05),
-              0 6px 16px rgba(0,0,0,0.35);
-    }
-
-    .theme-toggle {
-      display: flex;
-      justify-content: flex-end;
-      margin-bottom: 8px;
-    }
-
-    #themeToggle {
-      padding: 6px 14px;
-      border-radius: 999px;
-      border: 1px solid var(--border-color);
-      background: var(--card-bg);
-      color: var(--text-main);
-      font-size: 13px;
-      cursor: pointer;
-      transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.05s ease;
-    }
-
-    #themeToggle:hover {
-      background: #e5e7eb55;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-    }
-
-    #themeToggle:active {
-      transform: translateY(1px);
-      box-shadow: none;
-    }
-
-    @media (max-width: 640px) {
-      body {
-        padding: 12px;
-      }
-      .container {
-        padding: 16px;
-      }
-    }
-  </style>
+        }
+        .single-image-frame {
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(15,23,42,0.5);
+        }
+        .single-image {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-  <header class="topbar">
-    <div class="topbar-left">
-      <div class="topbar-logo">MT</div>
-      <div>
-        <div class="topbar-title">TRIAL eTSecutive — калькулятор системи TS-603</div>
-        <div class="topbar-subtitle">
-          Настінна гардеробна / гардеробна система на профілі TS-603
+<div class="page">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <div class="topbar-logo">
+                <img src="/images/logo_ua.png" alt="MT logo">
+            </div>
+            <div>
+                <div class="topbar-title">TRIAL eTSecutive</div>
+                <div class="topbar-sub">Гардеробна система на профілі TS-603</div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="theme-toggle">
-      <button id="themeToggle">🌑 Темна тема</button>
-    </div>
-  </header>
-
-  <p class="muted">
-    Прототип розрахунку: TS-603, TS-80, TS-100, SE-963, A10.723, TS-50 (P300/P500), TS-70.
-    Логіка: <strong>Lvert = Height − 19мм, Nvert = Sections + 1, профіль 6100мм.</strong>
-  </p>
-
-
-  <div class="grid" style="margin-top: 16px;">
-    <!-- ВХІДНІ ПАРАМЕТРИ -->
-    <div class="card">
-      <div class="badge">
-        ⚙️ Вхідні дані
-      </div>
-      <div style="display:flex; flex-direction:column; gap:10px;">
-        <div>
-          <label for="height">Висота системи, мм</label>
-          <input type="number" id="height" value="2500" min="1800" />
+        <div class="theme-toggle">
+            <button id="themeToggle"><span></span> Темна тема</button>
         </div>
-        <div>
-          <label for="wallWidth">Ширина стіни, мм</label>
-          <input id="wallWidth" type="number" value="2800" />
-        </div>
+    </header>
 
-        <div>
-          <label for="sections">Кількість секцій</label>
-          <input type="number" id="sections" value="3" min="1" />
-        </div>
-        <div id="sectionsHint" style="font-size: 12px; color: var(--text-muted); margin-top: 4px;"></div>
+    <!-- HERO -->
+    <section class="hero" id="top">
+        <div class="hero-content">
+            <h1 class="hero-title">Інтелігентна гардеробна система</h1>
 
-        <div>
-          <label for="corners">К-сть внутрішніх кутів (углова планка 53×53мм)</label>
-          <input type="number" id="corners" value="0" min="0" />
+            <p class="hero-sub">
+                Модульна система для гардеробних, стінових композицій та шоурумів.
+                Алюмінієвий профіль TS-603, декор-панелі з ДСП, тумби, полиці, аксесуари для гардеробів —
+                усе в одному рішенні.
+            </p>
+
+            <div class="hero-tags">
+                <span>Алюмінієвий профіль TS-603</span>
+                <span>Панелі Cleaf / SAIB</span>
+                <span>Тумби, полиці, труби</span>
+            </div>
+
+            <button class="btn-green" onclick="document.getElementById('calculator').scrollIntoView({behavior:'smooth'})">
+                Зібрати систему TS-603
+            </button>
+            <button class="btn-white" onclick="document.getElementById('gallery').scrollIntoView({behavior:'smooth'})">
+                Дивитись приклади
+            </button>
         </div>
 
-        <div>
-          <label for="shelves300">К-сть полиць P300 (≈глибина 300мм)</label>
-          <input type="number" id="shelves300" value="0" min="0" />
+        <div class="hero-image">
+            <img src="/images/photo4.jpg" alt="Система ETSECUTIVE"/>
         </div>
-        <div>
-          <label for="shelves500">Κ-сть полиць P500 (≈глибина 500мм)</label>
-          <input type="number" id="shelves500" value="0" min="0" />
+    </section>
+
+    <!-- ДЛЯ КОГО -->
+    <section id="for-whom">
+        <h2 class="section-headline">Для кого система eTSecutive</h2>
+        <p class="section-lead">
+            Система на профілі TS-603 підійде дизайнерам, виробникам меблів та приватним клієнтам,
+            які хочуть преміальну гардеробну або стінове рішення без зайвих компромісів.
+        </p>
+
+        <div class="three-cols">
+            <div class="card">
+                <div class="card-title">Дизайнеру</div>
+                <div class="card-body">
+                    <ul class="check-list">
+                        <li>Мінімалістична візуальна лінія та акуратні вузли.</li>
+                        <li>Гнучка модульність по секціях і висоті.</li>
+                        <li>Підтримка по кресленнях та вузлах від MT.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">Виробнику</div>
+                <div class="card-body">
+                    <ul class="check-list">
+                        <li>Комплектація профілем, панелями, тумбами та фурнітурою в MT.</li>
+                        <li>Розкрій ДСП, кромка, свердління, збирання тумб.</li>
+                        <li>Чіткі карти розкрою та калькулятор для прорахунків.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">Приватному клієнту</div>
+                <div class="card-body">
+                    <ul class="check-list">
+                        <li>Індивідуальне планування гардеробної.</li>
+                        <li>Комбінація відкритого зберігання, тумб та панелей.</li>
+                        <li>Підбір декору ДСП під інтер’єр.</li>
+                    </ul>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <div>
-          <label for="tubeZones">К-сть гардеробних зон з трубою PR-2912</label>
-          <input type="number" id="tubeZones" min="0" value="0" />
+    <!-- ПЕРЕВАГИ / ТЕХНІКА -->
+
+    <section class="ts603-advantages" id="advantages">
+        <h2 class="section-title">Переваги системи TS-603</h2>
+        <p class="section-sub">
+            eTSecutive поєднує технологічний алюмінієвий каркас TS-603,
+            декоративні панелі з ДСП, полиці, тумби та труби — усе в одному рішенні.
+        </p>
+
+        <div class="adv-grid">
+
+            <!-- 1. Несучий профіль -->
+            <div class="adv-card">
+                <span class="adv-tag green">Несучий профіль</span>
+                <h3>Вертикальні стійки TS-603</h3>
+                <p>
+                    Профіль 6100 мм. Монтаж через TS-80 та TS-100.
+                    На одну стійку може припадати кілька полиць, тумб і труб.
+                </p>
+                <img src="images/ts603-profile1.jpg" alt="Профіль TS-603" class="adv-img">
+            </div>
+
+            <!-- 2. Панелі -->
+            <div class="adv-card">
+                <span class="adv-tag blue">Панелі та зазори</span>
+                <h3>Панелі та кліпси</h3>
+                <p>
+                    Панелі Cleaf/SAIB 18 мм кріпляться на 8 кліпс до однієї стійки.
+                    Технологічний зазор між панелями X = 4–7 мм.
+                </p>
+                <img src="images/ts603-panels.jpg" alt="Монтаж панелей" class="adv-img">
+            </div>
+
+            <!-- 3. Полиці -->
+            <div class="adv-card">
+                <span class="adv-tag orange">Полички та труби</span>
+                <h3>Полиці та гардеробні труби</h3>
+                <p>
+                    Полиці P300/P500, нахилені полиці для взуття.
+                    Труби PR-2912 та PR-679 з ущільнювачем та тримачами.
+                </p>
+                <img src="images/ts603-shelves.jpg" alt="Полиці системи" class="adv-img">
+            </div>
+
+            <!-- 4. Тумби -->
+            <div class="adv-card">
+                <span class="adv-tag purple">Функціонал</span>
+                <h3>Тумби, комоди, бокси</h3>
+                <p>
+                    Тумби вішаються на кронштейн TS-70.
+                    Можлива комплектація з 1–2 шухлядами, з фасадами ДСП.
+                </p>
+                <img src="images/ts603-drawers.jpg" alt="Тумби TS-70" class="adv-img">
+            </div>
+
+            <div  class="adv-card">
+                <span class="adv-tag orange">Естетика</span>
+                <h3>Максимум простору</h3>
+                <p>Приховані кріплення та мінімальна кількість видимих елементів створюють легкий,
+                    чистий інтер’єр.</p>
+                <img src="images/photo9.jpg" alt="clean design" class="adv-img">
+            </div>
+
+            <div  class="adv-card">
+                <span class="adv-tag blue">Модульність</span>
+                <h3>Повна модульність</h3>
+                <p>Усі елементи системи можна переставляти або доповнювати — змінюються без демонтажу. </p>
+                <img src="images/photo2.jpg" alt="modular system" class="adv-img">
+            </div>
+
+
         </div>
-        <div>
-          <label for="zonesPR679">К-сть гардеробних зон з круглою трубою PR-679</label>
-          <input id="zonesPR679" type="number" min="0" value="0">
+    </section>
+    <section class="tech-section" id="tech">
+        <h2 class="section-title">Технічні схеми системи eTSecutive</h2>
+        <p class="section-sub">
+            Короткі технічні схеми з каталогу TRIAL: монтаж стійки TS-603, кронштейни,
+            панелі й зазори, полиці, тумби та гардеробні труби. Допомагає дизайнеру й
+            виробнику швидко зрозуміти конструкцію системи.
+        </p>
+
+        <div class="accordion">
+
+            <!-- 1. Монтаж стійки -->
+            <div class="accordion-item open">
+                <button class="accordion-header">
+                    <span>Монтаж стійки TS-603</span>
+                    <span class="accordion-icon">⌄</span>
+                </button>
+                <div class="accordion-panel">
+                    <div class="accordion-text">
+                        <ul>
+                            <li>Стійка TS-603 кріпиться до стіни через кронштейн TS-80.</li>
+                            <li>Регулювання по висоті здійснюється опорою TS-100-S.</li>
+                            <li>Рекомендована висота системи – до 3000&nbsp;мм (див. паспорт).</li>
+                            <li>Одна стійка може нести кілька полиць, тумб і труб.</li>
+                        </ul>
+                    </div>
+                    <div class="accordion-image">
+                        <img src="/images/tech-vert-mount.jpg"
+                             alt="Монтаж стійки TS-603"
+                             class="tech-img">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Кронштейни -->
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span>Кронштейни та опори (TS-80, TS-100-S)</span>
+                    <span class="accordion-icon">⌄</span>
+                </button>
+                <div class="accordion-panel">
+                    <div class="accordion-text">
+                        <ul>
+                            <li>TS-80 – базовий кронштейн для кріплення TS-603 до стіни.</li>
+                            <li>TS-100-S – регульована опора для нижнього упору стійки.</li>
+                            <li>Монтаж здійснюється через дюбелі/анкери у несучу стіну.</li>
+                            <li>Довжина профілю 6100&nbsp;мм, підрізка по висоті на об’єкті.</li>
+                        </ul>
+                    </div>
+                    <div class="accordion-image">
+                        <img src="images/tech-brackets1.jpg"
+                             alt="Кронштейни TS-80 та опора TS-100-S"
+                             class="tech-img">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Панелі та зазори -->
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span>Панелі та зазори (Clip-TS, ущільнювач, щітка SE-963)</span>
+                    <span class="accordion-icon">⌄</span>
+                </button>
+                <div class="accordion-panel">
+                    <div class="accordion-text">
+                        <ul>
+                            <li>Панелі Cleaf/SAIB товщиною 18&nbsp;мм кріпляться на кліпси Clip-TS.</li>
+                            <li>На одну стійку – 8 кліпс (4&nbsp;зверху + 4&nbsp;знизу) на панель.</li>
+                            <li>Технологічний зазор між панелями X = 4–7&nbsp;мм + гумовий
+                                ущільнювач у профілі.</li>
+                            <li>Щітка SE-963 закриває профіль по периметру та візуально
+                                об’єднує панелі.</li>
+                        </ul>
+                    </div>
+                    <div class="accordion-image">
+                        <img src="images/tech-panels-gap.jpg"
+                             alt="Панелі та технологічні зазори"
+                             class="tech-img">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Полиці -->
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span>Полиці та тримачі (TS-50/TS-60/TS-70)</span>
+                    <span class="accordion-icon">⌄</span>
+                </button>
+                <div class="accordion-panel">
+                    <div class="accordion-text">
+                        <ul>
+                            <li>Полиці P300 і P500 кріпляться на TS-50 / TS-60 по глибині.</li>
+                            <li>Нахилені полиці для взуття – спеціальні кронштейни з упором.</li>
+                            <li>Товщина полиць з ДСП – 18&nbsp;мм, кромка по периметру.</li>
+                            <li>Варіанти глибини й ширини – згідно калькулятора TS-603.</li>
+                        </ul>
+                    </div>
+                    <div class="accordion-image">
+                        <img src="images/tech-shelves2.jpg"
+                             alt="Полиці та кронштейни"
+                             class="tech-img">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Тумби -->
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span>Тумби, комоди, бокси на TS-70</span>
+                    <span class="accordion-icon">⌄</span>
+                </button>
+                <div class="accordion-panel">
+                    <div class="accordion-text">
+                        <ul>
+                            <li>Тумби підвішуються на кронштейни TS-70, які фіксуються у паз профілю.</li>
+                            <li>Можливі комплектації з 1–2 шухлядами, фасади – ДСП або алюмінієві.</li>
+                            <li>Ширина тумби підбирається по секції (кратна модулю стійок).</li>
+                            <li>Навантаження на тумбу залежить від типу напрямних (див. каталог).</li>
+                        </ul>
+                    </div>
+                    <div class="accordion-image">
+                        <img src="images/ts603-drawers.jpg"
+                             alt="Тумби на кронштейні TS-70"
+                             class="tech-img">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Труби -->
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span>Гардеробні труби PR-2912 / PR-679</span>
+                    <span class="accordion-icon">⌄</span>
+                </button>
+                <div class="accordion-panel">
+                    <div class="accordion-text">
+                        <ul>
+                            <li>Труба PR-2912 – рямакутна, з гумовим ущільнювачем G-2912.</li>
+                            <li>Кругла труба PR-679 – для окремих зон/вішаків.</li>
+                            <li>Тримачі труб PR-2912-NS монтуються у паз TS-603.</li>
+                            <li>Довжина труб розраховується калькулятором з урахуванням торців.</li>
+                        </ul>
+                    </div>
+                    <div class="accordion-image">
+                        <img src="images/truba-garderobnaya.jpeg"
+                             alt="Гардеробні труби PR"
+                             class="tech-img">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. Розміри -->
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span>Основні розміри та допуски</span>
+                    <span class="accordion-icon">⌄</span>
+                </button>
+                <div class="accordion-panel">
+                    <div class="accordion-text">
+                        <ul>
+                            <li>Висота профілю, відступи від стіни, розміри пазів – згідно
+                                технічного каталогу TRIAL.</li>
+                            <li>Технологічні зазори панелей X = 4–7&nbsp;мм, ущільнювач у профілі.</li>
+                            <li>Рекомендовані максимальні прольоти полиць і труб – 600-900 мм.</li>
+                            <li>Усі ці параметри вже закладені в логіку калькулятора TS-603.</li>
+                        </ul>
+                    </div>
+                    <div class="accordion-image">
+                        <img src="images/tech-dimensions.jpg"
+                             alt="Габарити та розміри системи"
+                             class="tech-img">
+                    </div>
+                </div>
+            </div>
+
         </div>
-        <div>
-          <label for="shoeShelves">Наклонні полки для взуття (глибина 500мм)</label>
-          <input type="number" id="shoeShelves" value="0" min="0" />
+    </section>
+
+    <!-- КОНФІГУРАЦІЇ -->
+    <section id="configs">
+        <h2 class="section-headline">Типові конфігурації eTSecutive</h2>
+        <p class="section-lead">
+            На основі базового профілю TS-603 можна зібрати декілька сценаріїв — від простої стінової
+            системи до повноцінної гардеробної з тумбами та панелями.
+        </p>
+
+        <div class="config-grid">
+            <div class="card">
+                <div class="config-card-title">Базова стінова система</div>
+                <div class="config-meta">3 секції · труби + полиці</div>
+                <div class="card-body">
+                    Вертикальні стійки, гардеробні труби та полиці P300 / P500.
+                    Підходить для ніш, окремих стін та пральних кімнат.
+                </div>
+                <div class="config-card-footer">
+                    <span class="tag-small">Стартова конфігурація</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="config-card-title">Гардеробна з тумбами</div>
+                <div class="config-meta">3–4 секції · тумби + полиці</div>
+                <div class="card-body">
+                    Низ формується тумбами на TS-70, верх — полиці та труби.
+                    Можливе комбінування шухляд та відкритих ніш.
+                </div>
+                <div class="config-card-footer">
+                    <span class="tag-small">Максимум зберігання</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="config-card-title">Система з панелями</div>
+                <div class="config-meta">панелі на всю висоту</div>
+                <div class="card-body">
+                    Декоративні панелі з ДСП 18&nbsp;мм по всій висоті стіни.
+                    Полиці, тумби та труби кріпляться до стійок, панелі створюють єдине поле.
+                </div>
+                <div class="config-card-footer">
+                    <span class="tag-small">Преміальний вигляд</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="config-card-title">Кутова система</div>
+                <div class="config-meta">кут 53×53&nbsp;мм</div>
+                <div class="card-body">
+                    Вертикальні стійки з’єднуються кутовою планкою 53×53&nbsp;мм.
+                    Дає можливість якісно обіграти кутові гардеробні та стінові рішення.
+                </div>
+                <div class="config-card-footer">
+                    <span class="tag-small">Кути та ніші</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="config-card-title">Повна гардеробна eTSecutive</div>
+                <div class="config-meta">тумби + панелі + полиці + труби</div>
+                <div class="card-body">
+                    Комплексне рішення: панелі, тумби з шухлядами, полиці, труби, нахилені полиці для взуття.
+                    Прораховується у калькуляторі MT.
+                </div>
+                <div class="config-card-footer">
+                    <span class="tag-small">Рекомендація MT</span>
+                </div>
+            </div>
         </div>
-        <div>
-          <label for="tumba">К-сть тумб / боксів (TS-70)</label>
-          <input type="number" id="tumba" value="0" min="0" />
-        </div>
-        <div>
-          <label for="panels">К-сть декоративних панелей (на кліпсах)</label>
-          <input type="number" id="panels" value="0" min="0" />
-        </div>
-        <div>
-          <label for="decor">Декор ДСП (Cleaf / SAIB)</label>
-          <select id="decor" class="select-decor">
-            <option value="">— виберіть декор —</option>
-          </select>
-        </div>
-
-        <div id="decorPreview" style="margin-top: 10px; display:flex; gap:12px; align-items:center;">
-          <img id="decorImage" src="" alt="" style="width:70px;height:70px;object-fit:cover;border-radius:8px;border:1px solid var(--border-color); display:none;">
-          <div>
-            <div id="decorName" style="font-size:13px;"></div>
-            <div id="decorPrice" style="font-size:12px;color:var(--text-muted);"></div>
-          </div>
-        </div>
-
-        <div>
-          <label for="eurRate">Курс EUR → грн</label>
-          <input type="number" id="eurRate" value="49.1" min="1" step="0.01" />
-        </div>
-      </div>
-    </div>
-
-    <!-- СХЕМА СИСТЕМИ -->
-    <div class="card">
-      <div class="card" style="padding: 0; overflow: hidden;">
-        <div style="padding:16px;">
-          <div class="badge">📸 Вигляд системи TRIAL eTSecutive</div>
-          <p class="muted" style="margin-top:8px;">
-            Ідеї для гардеробних, стінових систем і модульних рішень на основі конструкції TS-603.
-          </p>
-        </div>
-        <div class="single-image-wrapper">
-          <div class="single-image-frame">
-            <img src="/images/photo1.jpg" alt="TRIAL eTSecutive system" class="single-image">
-          </div>
-        </div>
-      </div>
-
-      <div style="display:flex; flex-direction:column; gap:8px; font-size:13px;">
-        <div class="card">
-          <strong>Вертикальні стійки</strong><br>
-          <span id="schema-verts" class="muted"></span>
-        </div>
-        <div class="card">
-          <strong>Полиці</strong><br>
-          <span id="schema-shelves" class="muted"></span>
-        </div>
-        <div class="card">
-          <strong>Тумби, панелі, труби</strong><br>
-          <span id="schema-boxes" class="muted"></span>
-        </div>
-        <div class="card">
-          <strong>Кріплення та щітка</strong><br>
-          <span id="schema-fix" class="muted"></span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Приховані налаштування цін для менеджера -->
-  <div id="manager-prices" style="display:none;">
-    <input type="number" id="priceTS603" value="107.48" />
-    <input type="number" id="priceTS80"  value="3.54" />
-    <input type="number" id="priceTS100" value="4.81" />
-    <input type="number" id="priceBrush" value="0.97" />
-    <input type="number" id="priceClip"  value="0.86" />
-    <input type="number" id="priceBr300" value="12.37" />
-    <input type="number" id="priceBr500" value="15.63" />
-    <input type="number" id="priceTS70"  value="11.26" />
-    <input type="number" id="priceTubePR"   value="116.32" />
-    <input type="number" id="priceHolderSL" value="19.71" />
-    <input type="number" id="priceSealG"    value="8.15" />
-    <input type="number" id="priceTSPI500"  value="14.34" step="0.01">
-    <input type="number" id="priceFA813"    value="98.36" step="0.01">
-    <input type="number" id="priceFA867"    value="126.25" step="0.01">
-  </div>
-
-  <button class="btn" id="calcBtn">Розрахувати систему</button>
-
-  <div id="results" style="margin-top: 20px; display:none;">
-    <h2>Результат розрахунку</h2>
-    <p class="muted" id="summaryText"></p>
-
-    <div style="max-height: 320px; overflow:auto; margin-top: 10px;">
-      <table>
-        <thead>
-        <tr>
-          <th>Артикул</th>
-          <th>Назва</th>
-          <th>К-сть</th>
-          <th>Ціна, €/од.</th>
-          <th>Сума, €</th>
-        </tr>
-        </thead>
-        <tbody id="itemsBody"></tbody>
-        <tfoot>
-        <tr>
-          <td colspan="4">Разом, €</td>
-          <td id="totalEurCell">0.00</td>
-        </tr>
-        <tr>
-          <td colspan="4">Разом, грн</td>
-          <td id="totalUahCell">0.00</td>
-        </tr>
-        </tfoot>
-      </table>
-    </div>
-  </div>
-
-  <p class="muted" style="margin-top:12px;">
-    Логіка зафіксована як <strong>TRIAL-ETSECUTIVE-CALC-FREEZE</strong>.
-  </p>
-</div>
-
-<script>
-  // ---- ТЕМА (світла / темна) ----
-  (function() {
-    const root = document.documentElement;
-    const btn = document.getElementById("themeToggle");
-    const saved = localStorage.getItem("ts603Theme");
-
-    if (saved === "dark") {
-      root.classList.add("theme-dark");
-      if (btn) btn.textContent = "🔆 Світла тема";
-    } else {
-      if (btn) btn.textContent = "🌑 Темна тема";
-    }
-
-    if (btn) {
-      btn.addEventListener("click", () => {
-        const isDark = root.classList.toggle("theme-dark");
-        localStorage.setItem("ts603Theme", isDark ? "dark" : "light");
-        btn.textContent = isDark ? "🔆 Світла тема" : "🌑 Темна тема";
-      });
-    }
-  })();
-
-  const PRICES = {
-    VERTICAL: {
-      TS603: { code: "трTS-603-GR", price: 107.48, unit: "шт" },
-      TS80:  { code: "трTS-80-GR",  price: 3.54,   unit: "шт" },
-      TS100: { code: "трTS-100-S-GR", price: 4.81, unit: "шт" },
-      BRUSH: { code: "трSE-963N",   price: 0.97,  unit: "м" }
-    },
-    PANELS: {
-      CLIP: { code: "трA10.723", price: 0.86, unit: "шт" }
-    },
-    SHELF_300: {
-      RIGHT: { code: "трTS-50-DX", price: 12.37, unit: "шт" },
-      LEFT:  { code: "трTS-50-SX", price: 12.37, unit: "шт" }
-    },
-    SHELF_500: {
-      RIGHT: { code: "трTS-60-DX", price: 15.63, unit: "шт" },
-      LEFT:  { code: "трTS-60-SX", price: 15.63, unit: "шт" }
-    },
-    SHOE_SHELF: {
-      RIGHT: { code: "трTS-PI-DX500H30-2,5", price: 14.34, unit: "шт" },
-      LEFT:  { code: "трTS-PI-SX500H30-2,5", price: 14.34, unit: "шт" },
-      DIVIDER: { code: "FA-813", price: 98.36, unit: "шт" },
-      END_PROFILE: { code: "FA-867", price: 126.25, unit: "шт" }
-    },
-    TUMBA: {
-      HOLDER_RIGHT: { code: "трTS-70-DX", price: 11.26, unit: "шт" },
-      HOLDER_LEFT:  { code: "трTS-70-SX", price: 11.26, unit: "шт" },
-      RUNNERS:      { code: "RUNNER-TUMBA", price: 0, unit: "компл" }
-    },
-    PIPE_PR2912: {
-      PIPE:          { code: "трPR-2912-NS", price: 116.32, unit: "шт" },
-      HOLDER_SIDE:   { code: "трSL-2912-VN", price: 19.71, unit: "пара" },
-      HOLDER_CENTER: { code: "трSC-2912-VN", price: 6.18,   unit: "шт" },
-      SEAL:          { code: "трG-2912",     price: 8.15,   unit: "шт" }
-    },
-    PIPE_PR679: {
-      PIPE:   { code: "трPR-679-NS", price: 140.27, unit: "шт" },
-      HOLDER:{ code: "трSL-679-VN",  price: 19.71, unit: "пара" },
-      SEAL:  { code: "трA10.245",    price: 1.35,  unit: "м" }
-    }
-  };
-
-  function num(value, fallback = 0) {
-    const v = parseFloat(value);
-    return Number.isFinite(v) ? v : fallback;
-  }
-
-  // ---- Декори Cleaf / SAIB ----
-  const DECORS = [
-    { id:"cleaf_lr22",  brand:"Cleaf", name:"Cleaf LR22 Sable",          price: 9413.50, edgePrice: 49.3, img:"/images/lr22.jpg" },
-    { id:"cleaf_fa44",  brand:"Cleaf", name:"Cleaf FA44 Penelope",       price: 7154.90, edgePrice: 65.7, img:"/images/fa44.jpg" },
-    { id:"cleaf_fc98",  brand:"Cleaf", name:"Cleaf FC98 Lacca",          price: 9332.20, edgePrice: 49.3, img:"/images/fc98.jpg" },
-    { id:"cleaf_fc37",  brand:"Cleaf", name:"Cleaf FC37 Concreta",       price: 9325.00, edgePrice: 65.7, img:"/images/fc37.jpg" },
-    { id:"cleaf_fc38",  brand:"Cleaf", name:"Cleaf FC38 Concreta",       price: 9325.00, edgePrice: 65.7, img:"/images/fc38.jpg" },
-    { id:"cleaf_s128",  brand:"Cleaf", name:"Cleaf S128 Pembroke",       price: 8229.30, edgePrice: 49.3, img:"/images/s128.jpg" },
-    { id:"cleaf_bo73",  brand:"Cleaf", name:"Cleaf BO73 Millenium",      price: 7912.40, edgePrice: 49.3, img:"/images/bo73.jpg" },
-    { id:"cleaf_fc36",  brand:"Cleaf", name:"Cleaf FC36 Concreta",       price: 7560.80, edgePrice: 49.3, img:"/images/fc36.jpg" },
-    { id:"cleaf_fa42",  brand:"Cleaf", name:"Cleaf FA42 Penelope 25mm",  price: 6644.50, edgePrice: 65.7, img:"/images/fa42.jpg" },
-    { id:"cleaf_fb64",  brand:"Cleaf", name:"Cleaf FB64 Reflex",         price: 6629.60, edgePrice: 65.7, img:"/images/fb64.jpg" },
-    { id:"cleaf_fa41",  brand:"Cleaf", name:"Cleaf FA41 Penelope",       price: 6816.10, edgePrice: 65.7, img:"/images/fa41.jpg" },
-
-    { id:"saib_2023",   brand:"SAIB",  name:"SAIB 2023 Detroit",         price: 3918.70, edgePrice: 30.1, img:"/images/2023.jpg" },
-    { id:"saib_0281",   brand:"SAIB",  name:"SAIB 0281 Dharma",          price: 3918.70, edgePrice: 26.6, img:"/images/0281.jpg" },
-    { id:"saib_2024",   brand:"SAIB",  name:"SAIB 2024 Detroit",         price: 3918.70, edgePrice: 30.1, img:"/images/2024.jpg" },
-    { id:"saib_2055",   brand:"SAIB",  name:"SAIB 2055 Grunge",          price: 3918.70, edgePrice: 30.1, img:"/images/2055.jpg" },
-    { id:"saib_2054",   brand:"SAIB",  name:"SAIB 2054 Grunge",          price: 3918.70, edgePrice: 30.1, img:"/images/2054.jpg" },
-    { id:"saib_1851_25",brand:"SAIB",  name:"SAIB 1851 Grunge 25mm",     price: 3895.70, edgePrice: 30.1, img:"/images/1851-25.jpg" },
-    { id:"saib_3012",   brand:"SAIB",  name:"SAIB 3012 Aquarama",        price: 3508.40, edgePrice: 30.1, img:"/images/3012.jpg" },
-    { id:"saib_3018",   brand:"SAIB",  name:"SAIB 3018 Root",            price: 3411.60, edgePrice: 30.1, img:"/images/3018.jpg" },
-    { id:"saib_3022",   brand:"SAIB",  name:"SAIB 3022 Root",            price: 3411.60, edgePrice: 30.1, img:"/images/3022.jpg" }
-  ];
-
-  let currentDecor = null;
-
-  // Геометрія
-  const END_PANEL = 100;    // торцеві декоративні планки по 100 мм
-  const GAP_X     = 4;      // зазор між панелями
-
-  const BOARD_LENGTH   = 2800;
-  const BOARD_WIDTH    = 2070;
-  const BOARD_AREA_M2  = (BOARD_LENGTH * BOARD_WIDTH) / 1_000_000; // ≈5.80 м²
-
-  const SERVICE_BOARD_CUT_PER_M2 = 60;
-  const SERVICE_EDGE_GLUE_PER_ML = 60;
-  const SERVICE_STIYKA           = 350;
-  const PACKING_RATE             = 20;
-
-  const SERVICE_DRILL_TUMBA      = 100;
-  const SERVICE_ASSEMBLY_TUMBA   = 250;
-  const PRICE_RUNNER_SET_UAH     = 700;
-
-  // --- 45° заріз та склейка (кути + торцеві планки) ---
-  const PRICE_MITER_45_TORCH_UAH = 45;   // 116295 — Зріз торця деталі під ±45°
-  const PRICE_GLUE_CORNER_SET_UAH = 126; // 044302 — Стяжка деталей до 1 кв.м
-
-  // ----- ініціалізація декорів -----
-  const decorSelect = document.getElementById("decor");
-  if (decorSelect) {
-    DECORS.forEach(d => {
-      const opt = document.createElement("option");
-      opt.value = d.id;
-      opt.textContent = d.name;
-      decorSelect.appendChild(opt);
-    });
-
-    decorSelect.addEventListener("change", () => {
-      const d = DECORS.find(x => x.id === decorSelect.value);
-      currentDecor = d || null;
-
-      const img = document.getElementById("decorImage");
-      const nm  = document.getElementById("decorName");
-      const pr  = document.getElementById("decorPrice");
-
-      if (!d) {
-        if (img) img.style.display = "none";
-        if (nm) nm.textContent = "";
-        if (pr) pr.textContent = "";
-        return;
-      }
-
-      if (img) {
-        img.src = d.img;
-        img.alt = d.name;
-        img.style.display = "block";
-      }
-      if (nm) nm.textContent = d.name;
-      if (pr) pr.textContent = `Ціна: ${d.price.toLocaleString("uk-UA")} грн/лист`;
-
-      const panelsInput   = document.getElementById("panels");
-      const sectionsInput = document.getElementById("sections");
-      if (panelsInput && sectionsInput) {
-        const panelsVal   = Number(panelsInput.value || 0);
-        const sectionsVal = Number(sectionsInput.value || 0);
-        if (!panelsVal && sectionsVal) {
-          panelsInput.value = sectionsVal;
-        }
-      }
-    });
-  }
-
-  function calcSpan(widthWall, sections) {
-    if (!widthWall || !sections) return null;
-    const workWidth = widthWall - 2 * END_PANEL; // мінус торцеві планки 100+100
-    if (workWidth <= 0) return null;
-    return workWidth / sections;
-  }
-
-  function pickRecommendedSections(widthWall) {
-    if (!widthWall || widthWall < 1000) return null;
-    const SPAN_MIN    = 600;
-    const SPAN_MAX    = 900;
-    const SPAN_TARGET = 800;
-    const maxSections = 10;
-    let best = null;
-
-    for (let n = 1; n <= maxSections; n++) {
-      const span = calcSpan(widthWall, n);
-      if (!span) continue;
-      let penalty = 0;
-      if (span < SPAN_MIN || span > SPAN_MAX) penalty += 100000;
-      penalty += Math.abs(span - SPAN_TARGET);
-      if (!best || penalty < best.penalty) best = { sections: n, span, penalty };
-    }
-    return best;
-  }
-
-  let sectionsTouched = false;
-  let isAutoUpdate    = false;
-
-  function updateSectionsHint() {
-    const widthWall     = Number(document.getElementById("wallWidth")?.value || 0);
-    const sectionsInput = document.getElementById("sections");
-    const hintEl        = document.getElementById("sectionsHint");
-    if (!hintEl || !sectionsInput) return;
-
-    const rec = pickRecommendedSections(widthWall);
-    if (!rec) { hintEl.textContent = ""; return; }
-
-    if (!sectionsTouched) {
-      isAutoUpdate = true;
-      sectionsInput.value = rec.sections;
-      isAutoUpdate = false;
-    }
-
-    const currentSections = Number(sectionsInput.value || 0);
-    const currentSpan = currentSections ? calcSpan(widthWall, currentSections) : null;
-
-    let text = `Рекомендація MTU: ${rec.sections} секц. (~${rec.span.toFixed(0)} мм між торцевими планками).`;
-
-    if (currentSpan && currentSections) {
-      text += ` Зараз: ${currentSections} секц. (~${currentSpan.toFixed(0)} мм).`;
-      const SPAN_MIN    = 600;
-      const SPAN_MAX    = 900;
-      if (currentSpan >= SPAN_MIN && currentSpan <= SPAN_MAX) {
-        text += ` ✔ Проліт у рекомендованому діапазоні.`;
-      } else if (currentSpan < SPAN_MIN) {
-        text += ` ⚠ Модуль занадто вузький — краще зменшити кількість секцій.`;
-      } else {
-        text += ` ⚠ Модуль занадто широкий — краще збільшити кількість секцій.`;
-      }
-    }
-    hintEl.textContent = text;
-  }
-
-  document.getElementById("wallWidth")?.addEventListener("input", updateSectionsHint);
-  document.getElementById("sections")?.addEventListener("input", () => {
-    if (!isAutoUpdate) sectionsTouched = true;
-    updateSectionsHint();
-  });
-
-  setTimeout(updateSectionsHint, 100);
-
-  // ---- расчёт ДСП + кромки ----
-  function calcDecorBoardAndEdge(params) {
-    const {
-      spanWidth,
-      height,
-      panelsCount,
-      tombaCount,
-      shelves300,
-      shelves500,
-      shoeShelves,
-      cornersCount = 0
-    } = params;
-
-    if (!currentDecor) return null;
-    if (!spanWidth || spanWidth <= 0) return null;
-
-    const PANEL_TOP_GAP    = 19;
-    const TUMBA_DEPTH      = 500;
-    const TUMBA_HEIGHT     = 300;
-    const FRONT_HEIGHT     = 150;
-    const SHELF300_DEPTH   = 300;
-    const SHELF500_DEPTH   = 500;
-
-    const panelHeight    = height - PANEL_TOP_GAP;
-    const moduleWidth    = spanWidth;            // LM
-    const panelWidth     = moduleWidth - GAP_X;  // LP = LM - X
-
-    // --- внутрішні панелі ---
-    const areaOnePanelM2 = (panelWidth * panelHeight) / 1_000_000;
-    const areaPanelsM2   = areaOnePanelM2 * panelsCount;
-
-    const edgeOnePanelML = (2 * (panelWidth + panelHeight)) / 1000;
-    const edgePanelsML   = edgeOnePanelML * panelsCount;
-
-    // --- торцеві планки 100×H ---
-    const END_STRIPS_COUNT  = 2;
-    const END_STRIP_WIDTH   = 100;
-    const areaEndStripOneM2 = (END_STRIP_WIDTH * panelHeight) / 1_000_000;
-    const areaEndStripsM2   = areaEndStripOneM2 * END_STRIPS_COUNT;
-
-    const edgeEndStripOneML = (2 * (END_STRIP_WIDTH + panelHeight)) / 1000;
-    const edgeEndStripsML   = edgeEndStripOneML * END_STRIPS_COUNT;
-
-    // --- кутові планки 53×H (дві полоси на один кут) ---
-    const CORNER_STRIP_WIDTH   = 53;
-    const areaCornerLegOneM2   = (CORNER_STRIP_WIDTH * panelHeight) / 1_000_000;
-    const areaCornersM2        = cornersCount * 2 * areaCornerLegOneM2;
-
-    const edgeCornerLegOneML   = (2 * (CORNER_STRIP_WIDTH + panelHeight)) / 1000;
-    const edgeCornersML        = cornersCount * 2 * edgeCornerLegOneML;
-
-    const areaPanelsPlusStripsM2 = areaPanelsM2 + areaEndStripsM2 + areaCornersM2;
-    const edgePanelsPlusStripsML = edgePanelsML + edgeEndStripsML + edgeCornersML;
-
-    // --- тумби ---
-    let areaPerTumbaM2 = 0;
-    let areaTumbaM2    = 0;
-    let edgePerTumbaML = 0;
-    let edgeTumbaML    = 0;
-
-    if (tombaCount > 0) {
-      const W = spanWidth;
-      const H = TUMBA_HEIGHT;
-      const D = TUMBA_DEPTH;
-
-      const corpusArea =
-              2 * W * D +
-              2 * H * D +
-              W * H;
-
-      const frontsArea = 2 * W * FRONT_HEIGHT;
-
-      areaPerTumbaM2 = (corpusArea + frontsArea) / 1_000_000;
-      areaTumbaM2    = areaPerTumbaM2 * tombaCount;
-
-      const topPerim   = 2 * (W + D);
-      const sidesFront = 2 * H;
-      const frontPerim = 2 * (W + FRONT_HEIGHT) * 2;
-
-      edgePerTumbaML = (topPerim + sidesFront + frontPerim) / 1000;
-      edgeTumbaML    = edgePerTumbaML * tombaCount;
-    }
-
-    // --- прямі полиці ---
-    let areaShelvesM2 = 0;
-    let edgeShelvesML = 0;
-
-    if (shelves300 > 0) {
-      const areaOne = (spanWidth * SHELF300_DEPTH) / 1_000_000;
-      const edgeOne = 2 * (spanWidth + SHELF300_DEPTH) / 1000;
-      areaShelvesM2 += areaOne * shelves300;
-      edgeShelvesML += edgeOne * shelves300;
-    }
-
-    if (shelves500 > 0) {
-      const areaOne = (spanWidth * SHELF500_DEPTH) / 1_000_000;
-      const edgeOne = 2 * (spanWidth + SHELF500_DEPTH) / 1000;
-      areaShelvesM2 += areaOne * shelves500;
-      edgeShelvesML += edgeOne * shelves500;
-    }
-
-    // --- наклонні полиці ---
-    let areaShelvesTiltM2 = 0;
-    let edgeShelvesTiltML = 0;
-
-    if (shoeShelves > 0) {
-      const areaOneTilt = (spanWidth * SHELF500_DEPTH) / 1_000_000;
-      const edgeOneTilt = 2 * (spanWidth + SHELF500_DEPTH) / 1000;
-      areaShelvesTiltM2 = areaOneTilt * shoeShelves;
-      edgeShelvesTiltML = edgeOneTilt * shoeShelves;
-    }
-
-    const totalAreaM2 = areaPanelsPlusStripsM2 + areaTumbaM2 + areaShelvesM2 + areaShelvesTiltM2;
-    const totalEdgeML = edgePanelsPlusStripsML + edgeTumbaML + edgeShelvesML + edgeShelvesTiltML;
-    if (totalAreaM2 <= 0) return null;
-
-    const boardsCount = Math.ceil(totalAreaM2 / BOARD_AREA_M2);
-
-    const boardCost = boardsCount * (currentDecor.price || 0);
-    const edgeCost  = totalEdgeML * (currentDecor.edgePrice || 0);
-
-    const cutPanels       = areaPanelsPlusStripsM2 * SERVICE_BOARD_CUT_PER_M2;
-    const cutTumba        = areaTumbaM2             * SERVICE_BOARD_CUT_PER_M2;
-    const cutShelves      = areaShelvesM2           * SERVICE_BOARD_CUT_PER_M2;
-    const cutShelvesTilt  = areaShelvesTiltM2       * SERVICE_BOARD_CUT_PER_M2;
-
-    const edgePanels      = edgePanelsPlusStripsML * SERVICE_EDGE_GLUE_PER_ML;
-    const edgeTumba       = edgeTumbaML            * SERVICE_EDGE_GLUE_PER_ML;
-    const edgeShelves     = edgeShelvesML          * SERVICE_EDGE_GLUE_PER_ML;
-    const edgeShelvesTilt = edgeShelvesTiltML      * SERVICE_EDGE_GLUE_PER_ML;
-
-    return {
-      spanWidth,
-      panelWidth,
-      panelHeight,
-      panelsCount,
-      areaPanelsM2,
-      edgePanelsML,
-      areaEndStripsM2,
-      edgeEndStripsML,
-      areaCornersM2,
-      edgeCornersML,
-      areaPanelsPlusStripsM2,
-      edgePanelsPlusStripsML,
-
-      tombaCount,
-      areaPerTumbaM2,
-      areaTumbaM2,
-      edgePerTumbaML,
-      edgeTumbaML,
-
-      shelves300,
-      shelves500,
-      shoeShelves,
-      areaShelvesM2,
-      edgeShelvesML,
-      areaShelvesTiltM2,
-      edgeShelvesTiltML,
-
-      totalAreaM2,
-      totalEdgeML,
-      boardsCount,
-      boardCost,
-      edgeCost,
-      cutPanels,
-      cutTumba,
-      cutShelves,
-      cutShelvesTilt,
-      edgePanels,
-      edgeTumba,
-      edgeShelves,
-      edgeShelvesTilt
-    };
-  }
-
-  // ====== кнопка РОЗРАХУВАТИ ======
-  document.getElementById("calcBtn")?.addEventListener("click", function () {
-    const height      = num(document.getElementById("height")?.value, 0);
-    const wallWidth   = Math.max(0, num(document.getElementById("wallWidth")?.value, 0));
-    const sections    = Math.max(1, num(document.getElementById("sections")?.value, 1));
-    const corners     = Math.max(0, num(document.getElementById("corners")?.value, 0));
-
-    // --- 45° зарізи і склейка для кутів та торцевих планок ---
-    const END_STRIPS_COUNT = 2; // 2 торцеві планки 100 мм
-
-    // 45° зарізи
-    const miterCutsCorners = corners * 2;          // на кожен кут 53×53 → 2 зрізи
-    const miterCutsEnds    = END_STRIPS_COUNT * 1; // на кожен торець 100мм → 1 зріз
-    const miterCutsCount   = miterCutsCorners + miterCutsEnds;
-
-    // Склейка
-    const glueCorners      = corners * 1;          // на кожен кут → 1 склейка
-    const glueEnds         = END_STRIPS_COUNT * 1; // на кожен торець → 1 склейка
-    const glueCornersCount = glueCorners + glueEnds;
-
-    // Вартість
-    const costMiterCornersUAH = miterCutsCount   * PRICE_MITER_45_TORCH_UAH;
-    const costGlueCornersUAH  = glueCornersCount * PRICE_GLUE_CORNER_SET_UAH;
-
-    const shelves300  = Math.max(0, num(document.getElementById("shelves300")?.value, 0));
-    const shelves500  = Math.max(0, num(document.getElementById("shelves500")?.value, 0));
-    const shoeShelves = Math.max(0, num(document.getElementById("shoeShelves")?.value, 0));
-    const tubeZones   = Math.max(0, num(document.getElementById("tubeZones")?.value, 0));
-    const tombaCount  = Math.max(0, num(document.getElementById("tumba")?.value, 0));
-    const panels      = Math.max(0, num(document.getElementById("panels")?.value, 0));
-    const eurRate     = Math.max(0.01, num(document.getElementById("eurRate")?.value, 40));
-    const zonesPR679  = Math.max(0, num(document.getElementById("zonesPR679")?.value, 0));
-
-    const priceTS603    = num(document.getElementById("priceTS603")?.value, 0);
-    const priceTS80     = num(document.getElementById("priceTS80")?.value, 0);
-    const priceTS100    = num(document.getElementById("priceTS100")?.value, 0);
-    const priceBrush    = num(document.getElementById("priceBrush")?.value, 0);
-    const priceClip     = num(document.getElementById("priceClip")?.value, 0);
-    const priceBr300    = num(document.getElementById("priceBr300")?.value, 0);
-    const priceBr500    = num(document.getElementById("priceBr500")?.value, 0);
-    const priceTS70     = num(document.getElementById("priceTS70")?.value, 0);
-    const priceTubePR   = num(document.getElementById("priceTubePR")?.value, 0);
-    const priceHolderSL = num(document.getElementById("priceHolderSL")?.value, 0);
-    const priceSealG    = num(document.getElementById("priceSealG")?.value, 0);
-    const priceTSPI500  = num(document.getElementById("priceTSPI500")?.value, 0);
-    const priceFA813    = num(document.getElementById("priceFA813")?.value, 0);
-    const priceFA867    = num(document.getElementById("priceFA867")?.value, 0);
-
-    // ------ TS-603 -------
-    const wastePerSide = 60;
-    const L_profile    = 6100;
-    const L_usable     = L_profile - 2 * wastePerSide;
-
-    const Lvert = height - 19;
-    const Nvert = sections + 1;
-
-    let piecesPerBar = Math.floor(L_usable / Lvert);
-    if (piecesPerBar < 1) piecesPerBar = 1;
-
-    const barsTS603 = Math.ceil(Nvert / piecesPerBar);
-
-    const totalUsed    = Nvert * Lvert;
-    const totalAvail   = barsTS603 * L_usable;
-    const offcutTotal  = totalAvail - totalUsed;
-    const offcutPerBar = offcutTotal / barsTS603;
-
-    const qTS80        = Nvert * 3;
-    const qTS100       = Nvert;
-    const brushMeters  = (Lvert * Nvert) / 1000;
-    const qClips       = panels * 8;
-
-    // кронштейни P300
-    const qBr300Total = shelves300 * 2;
-    const qBr300Right = shelves300;
-    const qBr300Left  = shelves300;
-
-    // кронштейни P500
-    const qBr500Total = shelves500 * 2;
-    const qBr500Right = shelves500;
-    const qBr500Left  = shelves500;
-
-    // тримачі тумб
-    const qTS70Total = tombaCount * 4;
-    const qTS70Right = tombaCount * 2;
-    const qTS70Left  = tombaCount * 2;
-
-    const spanWidth = calcSpan(wallWidth, sections);
-
-    // Ущільнювач в профілі: одна смуга на одну стійку
-    let panelSealMeters = 0;
-    if (Nvert > 0 && height > 0) {
-      const PANEL_TOP_GAP = 19;
-      const panelHeight   = height - PANEL_TOP_GAP;
-      panelSealMeters     = (Nvert * panelHeight) / 1000;
-    }
-
-    // Гардеробні труби PR-2912
-    let tubeBarsCount     = 0;
-    let tubeHoldersPairs  = 0;
-    let tubeSealMeters    = 0;
-    let tubeTotalLenMM    = 0;
-
-    if (tubeZones > 0 && wallWidth > 0 && sections > 0 && spanWidth) {
-      const END_HOLDER_THICKNESS = 20;
-      const TOTAL_END_OFFSET     = END_HOLDER_THICKNESS * 2;
-      const L_one                = Math.max(0, spanWidth - TOTAL_END_OFFSET);
-
-      tubeTotalLenMM     = L_one * tubeZones;
-      const TUBE_BAR_LEN = 6000;
-      tubeBarsCount      = Math.ceil(tubeTotalLenMM / TUBE_BAR_LEN);
-      tubeHoldersPairs   = tubeZones;
-      tubeSealMeters     = tubeTotalLenMM / 1000;
-    }
-
-    // Гардеробні зони з PR-679
-    let tube679Result = null;
-    if (zonesPR679 > 0 && wallWidth > 0 && sections > 0 && spanWidth) {
-      const END_HOLDER_THICKNESS = 20;
-      const TOTAL_END_OFFSET     = END_HOLDER_THICKNESS * 2;
-      const clearSpanMM          = Math.max(0, spanWidth - TOTAL_END_OFFSET);
-      const lengthPerZoneMM      = clearSpanMM;
-      const totalLenMM           = lengthPerZoneMM * zonesPR679;
-      const totalLenM            = totalLenMM / 1000;
-
-      const BAR_LEN_PR679        = 5900;
-      const bars                 = Math.ceil(totalLenMM / BAR_LEN_PR679);
-      const holdersPairs         = zonesPR679;
-      const gasketMeters         = totalLenM;
-
-      const priceRodPR679        = PRICES.PIPE_PR679.PIPE.price;
-      const priceHolderSL679     = PRICES.PIPE_PR679.HOLDER.price;
-      const priceGasket679       = PRICES.PIPE_PR679.SEAL.price;
-
-      tube679Result = {
-        zonesPR679,
-        clearSpanMM,
-        totalLenM,
-        bars,
-        holdersPairs,
-        gasketMeters,
-        rodCost:    bars         * priceRodPR679,
-        holdersCost:holdersPairs * priceHolderSL679,
-        gasketCost: gasketMeters * priceGasket679,
-        priceRodPR679,
-        priceHolderSL679,
-        priceGasket679
-      };
-    }
-
-    // Наклонні полиці: FA-813 / FA-867 / TS-PI-500
-    const qTSPI500Total = shoeShelves * 2;
-    const qTSPI500Right = shoeShelves;
-    const qTSPI500Left  = shoeShelves;
-    const shoeShelvesTotalLenMM = shoeShelves > 0 && spanWidth ? spanWidth * shoeShelves : 0;
-    const BAR_FA813 = 5200;
-    const BAR_FA867 = 6100;
-    const barsFA813 = shoeShelvesTotalLenMM > 0 ? Math.ceil(shoeShelvesTotalLenMM / BAR_FA813) : 0;
-    const barsFA867 = shoeShelvesTotalLenMM > 0 ? Math.ceil(shoeShelvesTotalLenMM / BAR_FA867) : 0;
-
-    // ДСП/кромка
-    const decorResult = calcDecorBoardAndEdge({
-      spanWidth,
-      height,
-      panelsCount: panels,
-      tombaCount,
-      shelves300,
-      shelves500,
-      shoeShelves,
-      cornersCount: corners
-    });
-
-    // Вартість металу
-    const costTS603 = barsTS603 * priceTS603;
-    const costTS80  = qTS80     * priceTS80;
-    const costTS100 = qTS100    * priceTS100;
-    const costBrush = brushMeters * priceBrush;
-    const costClips = qClips    * priceClip;
-
-    const costBr300 = qBr300Total * priceBr300;
-    const costBr500 = qBr500Total * priceBr500;
-    const costTS70  = qTS70Total  * priceTS70;
-
-    const costTubePR   = tubeBarsCount    * priceTubePR;
-    const costHolderSL = tubeHoldersPairs * priceHolderSL;
-    const sealPieces   = tubeSealMeters > 0 ? Math.ceil(tubeSealMeters / 3) : 0;
-    const costSealG    = sealPieces * priceSealG;
-
-    const costTSPI500 = qTSPI500Total * priceTSPI500;
-    const costFA813   = barsFA813 * priceFA813;
-    const costFA867   = barsFA867 * priceFA867;
-
-    const costStiykaUAH   = Nvert * SERVICE_STIYKA;
-    const packingMeters   = barsTS603 * 6.1;
-    const costPackingUAH  = packingMeters * PACKING_RATE;
-    const servicesUAH     = costStiykaUAH + costPackingUAH;
-
-    const drawersPerTumba = 2;
-    const totalDrawers    = tombaCount * drawersPerTumba;
-
-    const costRunnersUAH       = totalDrawers * PRICE_RUNNER_SET_UAH;
-    const costDrillTumbaUAH    = tombaCount * SERVICE_DRILL_TUMBA;
-    const costAssemblyTumbaUAH = tombaCount * SERVICE_ASSEMBLY_TUMBA;
-
-    // Схема
-    const schemaVertsEl   = document.getElementById("schema-verts");
-    const schemaShelvesEl = document.getElementById("schema-shelves");
-    const schemaBoxesEl   = document.getElementById("schema-boxes");
-    const schemaFixEl     = document.getElementById("schema-fix");
-
-    if (schemaVertsEl) {
-      schemaVertsEl.textContent =
-              `Стійок: ${Nvert} шт · Профіль TS-603, висота ~${Lvert} мм (робоча довжина профілю ${L_usable} мм).`;
-    }
-    if (schemaShelvesEl) {
-      schemaShelvesEl.textContent =
-              `Полиці: P300 — ${shelves300} шт, P500 — ${shelves500} шт, наклонні для взуття — ${shoeShelves} шт.`;
-    }
-    if (schemaBoxesEl) {
-      let boxesText =
-              `Тумб: ${tombaCount} шт · Декоративні панелі: ${panels} шт; ` +
-              `торці 100мм — 2 шт; кутів 53×53мм — ${corners} шт.`;
-
-      if (decorResult && decorResult.tombaCount > 0 && decorResult.areaPerTumbaM2 > 0) {
-        const tumbaWidth = decorResult.spanWidth ? Math.round(decorResult.spanWidth) : null;
-        boxesText +=
-                ` Одна тумба: ширина ~${tumbaWidth || "?"} мм, глибина 500 мм, висота 300 мм (2 шухляди по 150 мм).`;
-      }
-      if (tubeBarsCount > 0) {
-        boxesText +=
-                ` · Труби PR-2912: ${tubeZones} зон, сумарна довжина ≈${(tubeTotalLenMM / 1000).toFixed(2)} м.`;
-      }
-      if (tube679Result) {
-        boxesText +=
-                ` · Зони з круглою трубою PR-679: ${tube679Result.zonesPR679} зон (≈${tube679Result.totalLenM.toFixed(2)} м).`;
-      }
-      if (shoeShelves > 0) {
-        boxesText +=
-                ` · Наклонні полиці: ${shoeShelves} шт (TS-PI-500, профілі FA-813 та FA-867).`;
-      }
-      schemaBoxesEl.textContent = boxesText;
-    }
-    if (schemaFixEl) {
-      schemaFixEl.textContent =
-              `Кріплень до стіни TS-80: ${qTS80} шт · Опор TS-100: ${qTS100} шт · ` +
-              `Щітка SE-963: ${brushMeters.toFixed(2)} м · ` +
-              `Ущільнювач в профілі TS-603: ≈${panelSealMeters.toFixed(2)} м.`;
-    }
-
-    // Таблиця
-    const items = [];
-
-    items.push(
-            { code: PRICES.VERTICAL.TS603.code, name: `Профіль вертикальний TS603 (робоча довжина ${L_usable}мм)`, qty: barsTS603, price: priceTS603, sum: costTS603 },
-            { code: PRICES.VERTICAL.TS80.code,  name: "Кріплення до стіни для TS/603 (3 шт/стійка)", qty: qTS80, price: priceTS80, sum: costTS80 },
-            { code: PRICES.VERTICAL.TS100.code, name: "Опора регульована для TS/603", qty: qTS100, price: priceTS100, sum: costTS100 },
-            { code: PRICES.VERTICAL.BRUSH.code, name: "Щітка для TS-603, чорна (м)", qty: brushMeters, price: priceBrush, sum: costBrush },
-            { code: PRICES.PANELS.CLIP.code,   name: "Кліпса (8 шт на панель)", qty: qClips, price: priceClip, sum: costClips },
-
-            // P300
-            { code: PRICES.SHELF_300.RIGHT.code, name: "Полицетримач P300×30 правий", qty: qBr300Right, price: priceBr300, sum: qBr300Right * priceBr300 },
-            { code: PRICES.SHELF_300.LEFT.code,  name: "Полицетримач P300×30 лівий",  qty: qBr300Left,  price: priceBr300, sum: qBr300Left  * priceBr300 },
-
-            // P500
-            { code: PRICES.SHELF_500.RIGHT.code, name: "Полицетримач P500×30 правий", qty: qBr500Right, price: priceBr500, sum: qBr500Right * priceBr500 },
-            { code: PRICES.SHELF_500.LEFT.code,  name: "Полицетримач P500×30 лівий",  qty: qBr500Left,  price: priceBr500, sum: qBr500Left  * priceBr500 },
-
-            // TS-70
-            { code: PRICES.TUMBA.HOLDER_RIGHT.code, name: "Тримач тумби TS-70 правий (2 шт/тумба)", qty: qTS70Right, price: priceTS70, sum: qTS70Right * priceTS70 },
-            { code: PRICES.TUMBA.HOLDER_LEFT.code,  name: "Тримач тумби TS-70 лівий (2 шт/тумба)",  qty: qTS70Left,  price: priceTS70, sum: qTS70Left  * priceTS70 }
-    );
-
-    if (panelSealMeters > 0) {
-      items.push({
-        code: "GASKET-TS603",
-        name: "Ущільнювач в профілі TS-603 (1 смуга на стійку, орієнтовно, м.п.)",
-        qty: panelSealMeters,
-        price: 0,
-        sum: 0
-      });
-    }
-
-    if (tubeBarsCount > 0) {
-      items.push(
-              { code: PRICES.PIPE_PR2912.PIPE.code, name: `Гардеробна труба PR-2912-NS, 6000мм (≈${(tubeTotalLenMM / 1000).toFixed(2)} м)`, qty: tubeBarsCount, price: priceTubePR, sum: costTubePR },
-              { code: PRICES.PIPE_PR2912.HOLDER_SIDE.code, name: "Тримач труби PR-2912 (боковий, пара)", qty: tubeHoldersPairs, price: priceHolderSL, sum: costHolderSL },
-              { code: PRICES.PIPE_PR2912.SEAL.code,     name: `Ущільнювач G-2912 для PR-2912 (≈${tubeSealMeters.toFixed(2)} м)`, qty: sealPieces, price: priceSealG, sum: costSealG }
-      );
-    }
-
-    if (tube679Result) {
-      items.push(
-              { code: PRICES.PIPE_PR679.PIPE.code, name: `Гардеробна труба PR-679-NS, 5900мм (≈${tube679Result.totalLenM.toFixed(2)} м)`, qty: tube679Result.bars, price: tube679Result.priceRodPR679, sum: tube679Result.rodCost },
-              { code: PRICES.PIPE_PR679.HOLDER.code, name: "Тримач SL-679-VN для PR-679 (пара)", qty: tube679Result.holdersPairs, price: tube679Result.priceHolderSL679, sum: tube679Result.holdersCost },
-              { code: PRICES.PIPE_PR679.SEAL.code, name: "Ущільнювач A10.245 для PR-679", qty: tube679Result.gasketMeters, price: tube679Result.priceGasket679, sum: tube679Result.gasketCost }
-      );
-    }
-
-    if (shoeShelves > 0) {
-      items.push(
-              { code: PRICES.SHOE_SHELF.RIGHT.code, name: "Кронштейн TS-PI 500 мм правий (1 шт/полиця)", qty: qTSPI500Right, price: priceTSPI500, sum: qTSPI500Right * priceTSPI500 },
-              { code: PRICES.SHOE_SHELF.LEFT.code,  name: "Кронштейн TS-PI 500 мм лівий (1 шт/полиця)",  qty: qTSPI500Left,  price: priceTSPI500, sum: qTSPI500Left  * priceTSPI500 },
-              { code: PRICES.SHOE_SHELF.DIVIDER.code, name: `Профіль для взуття 5200мм (≈${(shoeShelvesTotalLenMM / 1000).toFixed(2)} м)`, qty: barsFA813, price: priceFA813, sum: costFA813 },
-              { code: PRICES.SHOE_SHELF.END_PROFILE.code, name: `Торцевий профіль 6100мм (≈${(shoeShelvesTotalLenMM / 1000).toFixed(2)} м)`, qty: barsFA867, price: priceFA867, sum: costFA867 }
-      );
-    }
-
-    if (decorResult && currentDecor) {
-      items.push(
-              {
-                code: `DSP-${currentDecor.id}`,
-                name:
-                        `ДСП ${currentDecor.name} (панелі + торці 100мм + кути 53мм + тумби + полиці + наклонні полиці ≈${decorResult.totalAreaM2.toFixed(2)} м²; ` +
-                        `панель для TS-603: видима ширина LM ≈${decorResult.spanWidth.toFixed(1)} мм, розкрій LP ≈${decorResult.panelWidth.toFixed(1)} мм)`,
-                qty: decorResult.boardsCount,
-                price: (currentDecor.price || 0) / eurRate,
-                sum: decorResult.boardCost / eurRate
-              },
-              {
-                code: `EDGE-${currentDecor.id}`,
-                name:
-                        `Кромка в тон декору (усього ≈${decorResult.totalEdgeML.toFixed(1)} м.п.)`,
-                qty: decorResult.totalEdgeML,
-                price: (currentDecor.edgePrice || 0) / eurRate,
-                sum: decorResult.edgeCost / eurRate
-              }
-      );
-
-      if (decorResult.areaPanelsPlusStripsM2 > 0) {
-        items.push({
-          code: "srv-DSP-CUT-PANELS",
-          name: `Розкрій ДСП (панелі + торці + кути ≈${decorResult.areaPanelsPlusStripsM2.toFixed(2)} м²)`,
-          qty: decorResult.areaPanelsPlusStripsM2,
-          price: SERVICE_BOARD_CUT_PER_M2 / eurRate,
-          sum: decorResult.cutPanels / eurRate
-        });
-      }
-      if (decorResult.areaTumbaM2 > 0) {
-        items.push({
-          code: "srv-DSP-CUT-TUMBA",
-          name: `Розкрій ДСП (тумби ≈${decorResult.areaTumbaM2.toFixed(2)} м²)`,
-          qty: decorResult.areaTumbaM2,
-          price: SERVICE_BOARD_CUT_PER_M2 / eurRate,
-          sum: decorResult.cutTumba / eurRate
-        });
-      }
-      if (decorResult.areaShelvesM2 > 0) {
-        items.push({
-          code: "srv-DSP-CUT-SHELVES",
-          name: `Розкрій ДСП (полиці ≈${decorResult.areaShelvesM2.toFixed(2)} м²)`,
-          qty: decorResult.areaShelvesM2,
-          price: SERVICE_BOARD_CUT_PER_M2 / eurRate,
-          sum: decorResult.cutShelves / eurRate
-        });
-      }
-      if (decorResult.areaShelvesTiltM2 > 0) {
-        items.push({
-          code: "srv-DSP-CUT-SHELVES-TILT",
-          name: `Розкрій ДСП (наклонні полиці ≈${decorResult.areaShelvesTiltM2.toFixed(2)} м²)`,
-          qty: decorResult.areaShelvesTiltM2,
-          price: SERVICE_BOARD_CUT_PER_M2 / eurRate,
-          sum: decorResult.cutShelvesTilt / eurRate
-        });
-      }
-
-      if (decorResult.edgePanelsPlusStripsML > 0) {
-        items.push({
-          code: "srv-EDGE-GLUE-PANELS",
-          name: `Наклеювання кромки (панелі + торці + кути ≈${decorResult.edgePanelsPlusStripsML.toFixed(1)} м.п.)`,
-          qty: decorResult.edgePanelsPlusStripsML,
-          price: SERVICE_EDGE_GLUE_PER_ML / eurRate,
-          sum: decorResult.edgePanels / eurRate
-        });
-      }
-      if (decorResult.edgeTumbaML > 0) {
-        items.push({
-          code: "srv-EDGE-GLUE-TUMBA",
-          name: `Наклеювання кромки (тумби ≈${decorResult.edgeTumbaML.toFixed(1)} м.п.)`,
-          qty: decorResult.edgeTumbaML,
-          price: SERVICE_EDGE_GLUE_PER_ML / eurRate,
-          sum: decorResult.edgeTumba / eurRate
-        });
-      }
-      if (decorResult.edgeShelvesML > 0) {
-        items.push({
-          code: "srv-EDGE-GLUE-SHELVES",
-          name: `Наклеювання кромки (полиці ≈${decorResult.edgeShelvesML.toFixed(1)} м.п.)`,
-          qty: decorResult.edgeShelvesML,
-          price: SERVICE_EDGE_GLUE_PER_ML / eurRate,
-          sum: decorResult.edgeShelves / eurRate
-        });
-      }
-      if (decorResult.edgeShelvesTiltML > 0) {
-        items.push({
-          code: "srv-EDGE-GLUE-SHELVES-TILT",
-          name: `Наклеювання кромки (наклонні полиці ≈${decorResult.edgeShelvesTiltML.toFixed(1)} м.п.)`,
-          qty: decorResult.edgeShelvesTiltML,
-          price: SERVICE_EDGE_GLUE_PER_ML / eurRate,
-          sum: decorResult.edgeShelvesTilt / eurRate
-        });
-      }
-    }
-
-    // --- Додаткові роботи: 45° та склейка ---
-    if (miterCutsCount > 0) {
-      items.push({
-        code: "116295",
-        name: "Зріз торця деталі під ±45° (кутові + торцеві планки)",
-        qty: miterCutsCount,
-        price: PRICE_MITER_45_TORCH_UAH / eurRate,
-        sum: costMiterCornersUAH / eurRate
-      });
-    }
-
-    if (glueCornersCount > 0) {
-      items.push({
-        code: "044302",
-        name: "Стяжка/склейка деталей до 1 кв.м (кутові + торцеві планки)",
-        qty: glueCornersCount,
-        price: PRICE_GLUE_CORNER_SET_UAH / eurRate,
-        sum: costGlueCornersUAH / eurRate
-      });
-    }
-
-    items.push(
-            {
-              code: "srv-ETSEQUTIVE",
-              name: "Виготовлення стійки ETSEQUTIVE TRIAL (087374)",
-              qty: Nvert,
-              price: SERVICE_STIYKA / eurRate,
-              sum: costStiykaUAH / eurRate
-            },
-            {
-              code: "srv-PACK-ALU",
-              name: `Упаковка профілів (116349, ${PACKING_RATE} грн/м.п.)`,
-              qty: packingMeters,
-              price: PACKING_RATE / eurRate,
-              sum: costPackingUAH / eurRate
-            }
-    );
-
-    if (tombaCount > 0) {
-      items.push(
-              {
-                code: "RUNNER-TUMBA",
-                name: "Напрямні для шухляд тумби (2 шухляди/тумба)",
-                qty: totalDrawers,
-                price: PRICE_RUNNER_SET_UAH / eurRate,
-                sum: costRunnersUAH / eurRate
-              },
-              {
-                code: "srv-DRILL-TUMBA",
-                name: "Свердління під напрямні тумби (2 шухляди/тумба)",
-                qty: tombaCount,
-                price: SERVICE_DRILL_TUMBA / eurRate,
-                sum: costDrillTumbaUAH / eurRate
-              },
-              {
-                code: "srv-ASSEMBLY-TUMBA",
-                name: "Збірка тумби з 2 шухлядами",
-                qty: tombaCount,
-                price: SERVICE_ASSEMBLY_TUMBA / eurRate,
-                sum: costAssemblyTumbaUAH / eurRate
-              }
-      );
-    }
-
-    let totalEur = 0;
-    const tbody = document.getElementById("itemsBody");
-    if (tbody) {
-      tbody.innerHTML = "";
-      items.forEach(item => {
-        if (!item.qty || item.qty <= 0) return;
-        totalEur += item.sum;
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
+    </section>
+
+    <!-- КАЛЬКУЛЯТОР -->
+    <section id="calculator">
+        <h2 class="section-headline">Розрахунок системи TS-603 онлайн</h2>
+        <p class="section-lead">
+            Вкажіть розміри стіни, кількість секцій, тумб, полиць та панелей — калькулятор
+            автоматично прорахує профілі, панелі, розкрій, послуги та вартість системи.
+        </p>
+
+        <div class="calc-wrapper">
+            <!-- Весь калькулятор TS-603 (логіка TRIAL-ETSECUTIVE-CALC-FREEZE) -->
+            <div class="container">
+
+                <div class="grid" style="margin-top: 16px;">
+                    <!-- ВХІДНІ ПАРАМЕТРИ -->
+                    <div class="card">
+                        <div class="badge">
+                            ⚙️ Вхідні дані
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:10px;">
+                            <div>
+                                <label for="height">Висота системи, мм</label>
+                                <input type="number" id="height" value="2500" min="1800" />
+                            </div>
+                            <div>
+                                <label for="wallWidth">Ширина стіни, мм</label>
+                                <input id="wallWidth" type="number" value="2800" />
+                            </div>
+
+                            <div>
+                                <label for="sections">Кількість секцій</label>
+                                <input type="number" id="sections" value="3" min="1" />
+                            </div>
+                            <div id="sectionsHint" style="font-size: 12px; color: var(--text-muted); margin-top: 4px;"></div>
+
+                            <div>
+                                <label for="corners">К-сть внутрішніх кутів (углова планка 53×53мм)</label>
+                                <input type="number" id="corners" value="0" min="0" />
+                            </div>
+
+                            <div>
+                                <label for="shelves300">К-сть полиць P300 (≈глибина 300мм)</label>
+                                <input type="number" id="shelves300" value="0" min="0" />
+                            </div>
+                            <div>
+                                <label for="shelves500">Κ-сть полиць P500 (≈глибина 500мм)</label>
+                                <input type="number" id="shelves500" value="0" min="0" />
+                            </div>
+
+                            <div>
+                                <label for="tubeZones">К-сть гардеробних зон з трубою PR-2912</label>
+                                <input type="number" id="tubeZones" min="0" value="0" />
+                            </div>
+                            <div>
+                                <label for="zonesPR679">К-сть гардеробних зон з круглою трубою PR-679</label>
+                                <input id="zonesPR679" type="number" min="0" value="0">
+                            </div>
+                            <div>
+                                <label for="shoeShelves">Наклонні полки для взуття (глибина 500мм)</label>
+                                <input type="number" id="shoeShelves" value="0" min="0" />
+                            </div>
+                            <div>
+                                <label for="tumba">К-сть тумб / боксів (TS-70)</label>
+                                <input type="number" id="tumba" value="0" min="0" />
+                            </div>
+                            <div>
+                                <label for="panels">К-сть декоративних панелей (на кліпсах)</label>
+                                <input type="number" id="panels" value="0" min="0" />
+                            </div>
+                            <div>
+                                <label for="decor">Декор ДСП (Cleaf / SAIB)</label>
+                                <select id="decor" class="select-decor">
+                                    <option value="">— виберіть декор —</option>
+                                </select>
+                            </div>
+
+                            <div id="decorPreview" style="margin-top: 10px; display:flex; gap:12px; align-items:center;">
+                                <img id="decorImage" src="" alt="" style="width:70px;height:70px;object-fit:cover;border-radius:8px;border:1px solid var(--border-color); display:none;">
+                                <div>
+                                    <div id="decorName" style="font-size:13px;"></div>
+                                    <div id="decorPrice" style="font-size:12px;color:var(--text-muted);"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="eurRate">Курс EUR → грн</label>
+                                <input type="number" id="eurRate" value="49.1" min="1" step="0.01" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- СХЕМА СИСТЕМИ -->
+                    <div class="card">
+                        <div class="card" style="padding: 0; overflow: hidden;">
+                            <div style="padding:16px;">
+                                <div class="badge">📸 Вигляд системи TRIAL eTSecutive</div>
+                                <p class="muted" style="margin-top:8px;">
+                                    Ідеї для гардеробних, стінових систем і модульних рішень на основі конструкції TS-603.
+                                </p>
+                            </div>
+                            <div class="single-image-wrapper">
+                                <div class="single-image-frame">
+                                    <img src="/images/photo1.jpg" alt="TRIAL eTSecutive system" class="single-image">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display:flex; flex-direction:column; gap:8px; font-size:13px;">
+                            <div class="card">
+                                <strong>Вертикальні стійки</strong><br>
+                                <span id="schema-verts" class="muted"></span>
+                            </div>
+                            <div class="card">
+                                <strong>Полиці</strong><br>
+                                <span id="schema-shelves" class="muted"></span>
+                            </div>
+                            <div class="card">
+                                <strong>Тумби, панелі, труби</strong><br>
+                                <span id="schema-boxes" class="muted"></span>
+                            </div>
+                            <div class="card">
+                                <strong>Кріплення та щітка</strong><br>
+                                <span id="schema-fix" class="muted"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Приховані налаштування цін для менеджера -->
+                <div id="manager-prices" style="display:none;">
+                    <input type="number" id="priceTS603" value="107.48" />
+                    <input type="number" id="priceTS80"  value="3.54" />
+                    <input type="number" id="priceTS100" value="4.81" />
+                    <input type="number" id="priceBrush" value="0.97" />
+                    <input type="number" id="priceClip"  value="0.86" />
+                    <input type="number" id="priceBr300" value="12.37" />
+                    <input type="number" id="priceBr500" value="15.63" />
+                    <input type="number" id="priceTS70"  value="11.26" />
+                    <input type="number" id="priceTubePR"   value="116.32" />
+                    <input type="number" id="priceHolderSL" value="19.71" />
+                    <input type="number" id="priceSealG"    value="8.15" />
+                    <input type="number" id="priceTSPI500"  value="14.34" step="0.01">
+                    <input type="number" id="priceFA813"    value="98.36" step="0.01">
+                    <input type="number" id="priceFA867"    value="126.25" step="0.01">
+                </div>
+
+                <button class="btn" id="calcBtn">Розрахувати систему</button>
+
+                <div id="results" style="margin-top: 20px; display:none;">
+                    <h2>Результат розрахунку</h2>
+                    <p class="muted" id="summaryText"></p>
+
+                    <div style="max-height: 320px; overflow:auto; margin-top: 10px;">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Артикул</th>
+                                <th>Назва</th>
+                                <th>К-сть</th>
+                                <th>Ціна, €/од.</th>
+                                <th>Сума, €</th>
+                            </tr>
+                            </thead>
+                            <tbody id="itemsBody"></tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="4">Разом, €</td>
+                                <td id="totalEurCell">0.00</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">Разом, грн</td>
+                                <td id="totalUahCell">0.00</td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <p class="muted" style="margin-top:12px;">
+                    Логіка зафіксована як <strong>TRIAL-ETSECUTIVE-CALC-FREEZE</strong>.
+                </p>
+            </div>
+
+            <script>
+                // ---- ТЕМА (світла / темна) ----
+                (function() {
+                    const root = document.documentElement;
+                    const btn = document.getElementById("themeToggle");
+                    const saved = localStorage.getItem("ts603Theme");
+
+                    if (saved === "dark") {
+                        root.classList.add("theme-dark");
+                        if (btn) btn.textContent = "🔆 Світла тема";
+                    } else {
+                        if (btn) btn.textContent = "🌑 Темна тема";
+                    }
+
+                    if (btn) {
+                        btn.addEventListener("click", () => {
+                            const isDark = root.classList.toggle("theme-dark");
+                            localStorage.setItem("ts603Theme", isDark ? "dark" : "light");
+                            btn.textContent = isDark ? "🔆 Світла тема" : "🌑 Темна тема";
+                        });
+                    }
+                })();
+
+                const PRICES = {
+                    VERTICAL: {
+                        TS603: { code: "трTS-603-GR", price: 107.48, unit: "шт" },
+                        TS80:  { code: "трTS-80-GR",  price: 3.54,   unit: "шт" },
+                        TS100: { code: "трTS-100-S-GR", price: 4.81, unit: "шт" },
+                        BRUSH: { code: "трSE-963N",   price: 0.97,  unit: "м" }
+                    },
+                    PANELS: {
+                        CLIP: { code: "трA10.723", price: 0.86, unit: "шт" }
+                    },
+                    SHELF_300: {
+                        RIGHT: { code: "трTS-50-DX", price: 12.37, unit: "шт" },
+                        LEFT:  { code: "трTS-50-SX", price: 12.37, unit: "шт" }
+                    },
+                    SHELF_500: {
+                        RIGHT: { code: "трTS-60-DX", price: 15.63, unit: "шт" },
+                        LEFT:  { code: "трTS-60-SX", price: 15.63, unit: "шт" }
+                    },
+                    SHOE_SHELF: {
+                        RIGHT: { code: "трTS-PI-DX500H30-2,5", price: 14.34, unit: "шт" },
+                        LEFT:  { code: "трTS-PI-SX500H30-2,5", price: 14.34, unit: "шт" },
+                        DIVIDER: { code: "FA-813", price: 98.36, unit: "шт" },
+                        END_PROFILE: { code: "FA-867", price: 126.25, unit: "шт" }
+                    },
+                    TUMBA: {
+                        HOLDER_RIGHT: { code: "трTS-70-DX", price: 11.26, unit: "шт" },
+                        HOLDER_LEFT:  { code: "трTS-70-SX", price: 11.26, unit: "шт" },
+                        RUNNERS:      { code: "RUNNER-TUMBA", price: 0, unit: "компл" }
+                    },
+                    PIPE_PR2912: {
+                        PIPE:          { code: "трPR-2912-NS", price: 116.32, unit: "шт" },
+                        HOLDER_SIDE:   { code: "трSL-2912-VN", price: 19.71, unit: "пара" },
+                        HOLDER_CENTER: { code: "трSC-2912-VN", price: 6.18,   unit: "шт" },
+                        SEAL:          { code: "трG-2912",     price: 8.15,   unit: "шт" }
+                    },
+                    PIPE_PR679: {
+                        PIPE:   { code: "трPR-679-NS", price: 140.27, unit: "шт" },
+                        HOLDER:{ code: "трSL-679-VN",  price: 19.71, unit: "пара" },
+                        SEAL:  { code: "трA10.245",    price: 1.35,  unit: "м" }
+                    }
+                };
+
+                function num(value, fallback = 0) {
+                    const v = parseFloat(value);
+                    return Number.isFinite(v) ? v : fallback;
+                }
+
+                // ---- Декори Cleaf / SAIB ----
+                const DECORS = [
+                    { id:"cleaf_lr22",  brand:"Cleaf", name:"Cleaf LR22 Sable",          price: 9413.50, edgePrice: 49.3, img:"/images/lr22.jpg" },
+                    { id:"cleaf_fa44",  brand:"Cleaf", name:"Cleaf FA44 Penelope",       price: 7154.90, edgePrice: 65.7, img:"/images/fa44.jpg" },
+                    { id:"cleaf_fc98",  brand:"Cleaf", name:"Cleaf FC98 Lacca",          price: 9332.20, edgePrice: 49.3, img:"/images/fc98.jpg" },
+                    { id:"cleaf_fc37",  brand:"Cleaf", name:"Cleaf FC37 Concreta",       price: 9325.00, edgePrice: 65.7, img:"/images/fc37.jpg" },
+                    { id:"cleaf_fc38",  brand:"Cleaf", name:"Cleaf FC38 Concreta",       price: 9325.00, edgePrice: 65.7, img:"/images/fc38.jpg" },
+                    { id:"cleaf_s128",  brand:"Cleaf", name:"Cleaf S128 Pembroke",       price: 8229.30, edgePrice: 49.3, img:"/images/s128.jpg" },
+                    { id:"cleaf_bo73",  brand:"Cleaf", name:"Cleaf BO73 Millenium",      price: 7912.40, edgePrice: 49.3, img:"/images/bo73.jpg" },
+                    { id:"cleaf_fc36",  brand:"Cleaf", name:"Cleaf FC36 Concreta",       price: 7560.80, edgePrice: 49.3, img:"/images/fc36.jpg" },
+                    { id:"cleaf_fa42",  brand:"Cleaf", name:"Cleaf FA42 Penelope 25mm",  price: 6644.50, edgePrice: 65.7, img:"/images/fa42.jpg" },
+                    { id:"cleaf_fb64",  brand:"Cleaf", name:"Cleaf FB64 Reflex",         price: 6629.60, edgePrice: 65.7, img:"/images/fb64.jpg" },
+                    { id:"cleaf_fa41",  brand:"Cleaf", name:"Cleaf FA41 Penelope",       price: 6816.10, edgePrice: 65.7, img:"/images/fa41.jpg" },
+
+                    { id:"saib_2023",   brand:"SAIB",  name:"SAIB 2023 Detroit",         price: 3918.70, edgePrice: 30.1, img:"/images/2023.jpg" },
+                    { id:"saib_0281",   brand:"SAIB",  name:"SAIB 0281 Dharma",          price: 3918.70, edgePrice: 26.6, img:"/images/0281.jpg" },
+                    { id:"saib_2024",   brand:"SAIB",  name:"SAIB 2024 Detroit",         price: 3918.70, edgePrice: 30.1, img:"/images/2024.jpg" },
+                    { id:"saib_2055",   brand:"SAIB",  name:"SAIB 2055 Grunge",          price: 3918.70, edgePrice: 30.1, img:"/images/2055.jpg" },
+                    { id:"saib_2054",   brand:"SAIB",  name:"SAIB 2054 Grunge",          price: 3918.70, edgePrice: 30.1, img:"/images/2054.jpg" },
+                    { id:"saib_1851_25",brand:"SAIB",  name:"SAIB 1851 Grunge 25mm",     price: 3895.70, edgePrice: 30.1, img:"/images/1851-25.jpg" },
+                    { id:"saib_3012",   brand:"SAIB",  name:"SAIB 3012 Aquarama",        price: 3508.40, edgePrice: 30.1, img:"/images/3012.jpg" },
+                    { id:"saib_3018",   brand:"SAIB",  name:"SAIB 3018 Root",            price: 3411.60, edgePrice: 30.1, img:"/images/3018.jpg" },
+                    { id:"saib_3022",   brand:"SAIB",  name:"SAIB 3022 Root",            price: 3411.60, edgePrice: 30.1, img:"/images/3022.jpg" }
+                ];
+
+                let currentDecor = null;
+
+                // Геометрія
+                const END_PANEL = 100;    // торцеві декоративні планки по 100 мм
+                const GAP_X     = 4;      // зазор між панелями
+
+                const BOARD_LENGTH   = 2800;
+                const BOARD_WIDTH    = 2070;
+                const BOARD_AREA_M2  = (BOARD_LENGTH * BOARD_WIDTH) / 1_000_000; // ≈5.80 м²
+
+                const SERVICE_BOARD_CUT_PER_M2 = 60;
+                const SERVICE_EDGE_GLUE_PER_ML = 60;
+                const SERVICE_STIYKA           = 350;
+                const PACKING_RATE             = 20;
+
+                const SERVICE_DRILL_TUMBA      = 100;
+                const SERVICE_ASSEMBLY_TUMBA   = 250;
+                const PRICE_RUNNER_SET_UAH     = 700;
+
+                // --- 45° заріз та склейка (кути + торцеві планки) ---
+                const PRICE_MITER_45_TORCH_UAH = 45;   // 116295 — Зріз торця деталі під ±45°
+                const PRICE_GLUE_CORNER_SET_UAH = 126; // 044302 — Стяжка деталей до 1 кв.м
+
+                // ----- ініціалізація декорів -----
+                const decorSelect = document.getElementById("decor");
+                if (decorSelect) {
+                    DECORS.forEach(d => {
+                        const opt = document.createElement("option");
+                        opt.value = d.id;
+                        opt.textContent = d.name;
+                        decorSelect.appendChild(opt);
+                    });
+
+                    decorSelect.addEventListener("change", () => {
+                        const d = DECORS.find(x => x.id === decorSelect.value);
+                        currentDecor = d || null;
+
+                        const img = document.getElementById("decorImage");
+                        const nm  = document.getElementById("decorName");
+                        const pr  = document.getElementById("decorPrice");
+
+                        if (!d) {
+                            if (img) img.style.display = "none";
+                            if (nm) nm.textContent = "";
+                            if (pr) pr.textContent = "";
+                            return;
+                        }
+
+                        if (img) {
+                            img.src = d.img;
+                            img.alt = d.name;
+                            img.style.display = "block";
+                        }
+                        if (nm) nm.textContent = d.name;
+                        if (pr) pr.textContent = `Ціна: ${d.price.toLocaleString("uk-UA")} грн/лист`;
+
+                        const panelsInput   = document.getElementById("panels");
+                        const sectionsInput = document.getElementById("sections");
+                        if (panelsInput && sectionsInput) {
+                            const panelsVal   = Number(panelsInput.value || 0);
+                            const sectionsVal = Number(sectionsInput.value || 0);
+                            if (!panelsVal && sectionsVal) {
+                                panelsInput.value = sectionsVal;
+                            }
+                        }
+                    });
+                }
+
+                function calcSpan(widthWall, sections) {
+                    if (!widthWall || !sections) return null;
+                    const workWidth = widthWall - 2 * END_PANEL; // мінус торцеві планки 100+100
+                    if (workWidth <= 0) return null;
+                    return workWidth / sections;
+                }
+
+                function pickRecommendedSections(widthWall) {
+                    if (!widthWall || widthWall < 1000) return null;
+                    const SPAN_MIN    = 600;
+                    const SPAN_MAX    = 900;
+                    const SPAN_TARGET = 800;
+                    const maxSections = 10;
+                    let best = null;
+
+                    for (let n = 1; n <= maxSections; n++) {
+                        const span = calcSpan(widthWall, n);
+                        if (!span) continue;
+                        let penalty = 0;
+                        if (span < SPAN_MIN || span > SPAN_MAX) penalty += 100000;
+                        penalty += Math.abs(span - SPAN_TARGET);
+                        if (!best || penalty < best.penalty) best = { sections: n, span, penalty };
+                    }
+                    return best;
+                }
+
+                let sectionsTouched = false;
+                let isAutoUpdate    = false;
+
+                function updateSectionsHint() {
+                    const widthWall     = Number(document.getElementById("wallWidth")?.value || 0);
+                    const sectionsInput = document.getElementById("sections");
+                    const hintEl        = document.getElementById("sectionsHint");
+                    if (!hintEl || !sectionsInput) return;
+
+                    const rec = pickRecommendedSections(widthWall);
+                    if (!rec) { hintEl.textContent = ""; return; }
+
+                    if (!sectionsTouched) {
+                        isAutoUpdate = true;
+                        sectionsInput.value = rec.sections;
+                        isAutoUpdate = false;
+                    }
+
+                    const currentSections = Number(sectionsInput.value || 0);
+                    const currentSpan = currentSections ? calcSpan(widthWall, currentSections) : null;
+
+                    let text = `Рекомендація MTU: ${rec.sections} секц. (~${rec.span.toFixed(0)} мм між торцевими планками).`;
+
+                    if (currentSpan && currentSections) {
+                        text += ` Зараз: ${currentSections} секц. (~${currentSpan.toFixed(0)} мм).`;
+                        const SPAN_MIN    = 600;
+                        const SPAN_MAX    = 900;
+                        if (currentSpan >= SPAN_MIN && currentSpan <= SPAN_MAX) {
+                            text += ` ✔ Проліт у рекомендованому діапазоні.`;
+                        } else if (currentSpan < SPAN_MIN) {
+                            text += ` ⚠ Модуль занадто вузький — краще зменшити кількість секцій.`;
+                        } else {
+                            text += ` ⚠ Модуль занадто широкий — краще збільшити кількість секцій.`;
+                        }
+                    }
+                    hintEl.textContent = text;
+                }
+
+                document.getElementById("wallWidth")?.addEventListener("input", updateSectionsHint);
+                document.getElementById("sections")?.addEventListener("input", () => {
+                    if (!isAutoUpdate) sectionsTouched = true;
+                    updateSectionsHint();
+                });
+
+                setTimeout(updateSectionsHint, 100);
+
+                // ---- расчёт ДСП + кромки ----
+                function calcDecorBoardAndEdge(params) {
+                    const {
+                        spanWidth,
+                        height,
+                        panelsCount,
+                        tombaCount,
+                        shelves300,
+                        shelves500,
+                        shoeShelves,
+                        cornersCount = 0
+                    } = params;
+
+                    if (!currentDecor) return null;
+                    if (!spanWidth || spanWidth <= 0) return null;
+
+                    const PANEL_TOP_GAP    = 19;
+                    const TUMBA_DEPTH      = 500;
+                    const TUMBA_HEIGHT     = 300;
+                    const FRONT_HEIGHT     = 150;
+                    const SHELF300_DEPTH   = 300;
+                    const SHELF500_DEPTH   = 500;
+
+                    const panelHeight    = height - PANEL_TOP_GAP;
+                    const moduleWidth    = spanWidth;            // LM
+                    const panelWidth     = moduleWidth - GAP_X;  // LP = LM - X
+
+                    // --- внутрішні панелі ---
+                    const areaOnePanelM2 = (panelWidth * panelHeight) / 1_000_000;
+                    const areaPanelsM2   = areaOnePanelM2 * panelsCount;
+
+                    const edgeOnePanelML = (2 * (panelWidth + panelHeight)) / 1000;
+                    const edgePanelsML   = edgeOnePanelML * panelsCount;
+
+                    // --- торцеві планки 100×H ---
+                    const END_STRIPS_COUNT  = 2;
+                    const END_STRIP_WIDTH   = 100;
+                    const areaEndStripOneM2 = (END_STRIP_WIDTH * panelHeight) / 1_000_000;
+                    const areaEndStripsM2   = areaEndStripOneM2 * END_STRIPS_COUNT;
+
+                    const edgeEndStripOneML = (2 * (END_STRIP_WIDTH + panelHeight)) / 1000;
+                    const edgeEndStripsML   = edgeEndStripOneML * END_STRIPS_COUNT;
+
+                    // --- кутові планки 53×H (дві полоси на один кут) ---
+                    const CORNER_STRIP_WIDTH   = 53;
+                    const areaCornerLegOneM2   = (CORNER_STRIP_WIDTH * panelHeight) / 1_000_000;
+                    const areaCornersM2        = cornersCount * 2 * areaCornerLegOneM2;
+
+                    const edgeCornerLegOneML   = (2 * (CORNER_STRIP_WIDTH + panelHeight)) / 1000;
+                    const edgeCornersML        = cornersCount * 2 * edgeCornerLegOneML;
+
+                    const areaPanelsPlusStripsM2 = areaPanelsM2 + areaEndStripsM2 + areaCornersM2;
+                    const edgePanelsPlusStripsML = edgePanelsML + edgeEndStripsML + edgeCornersML;
+
+                    // --- тумби ---
+                    let areaPerTumbaM2 = 0;
+                    let areaTumbaM2    = 0;
+                    let edgePerTumbaML = 0;
+                    let edgeTumbaML    = 0;
+
+                    if (tombaCount > 0) {
+                        const W = spanWidth;
+                        const H = TUMBA_HEIGHT;
+                        const D = TUMBA_DEPTH;
+
+                        const corpusArea =
+                            2 * W * D +
+                            2 * H * D +
+                            W * H;
+
+                        const frontsArea = 2 * W * FRONT_HEIGHT;
+
+                        areaPerTumbaM2 = (corpusArea + frontsArea) / 1_000_000;
+                        areaTumbaM2    = areaPerTumbaM2 * tombaCount;
+
+                        const topPerim   = 2 * (W + D);
+                        const sidesFront = 2 * H;
+                        const frontPerim = 2 * (W + FRONT_HEIGHT) * 2;
+
+                        edgePerTumbaML = (topPerim + sidesFront + frontPerim) / 1000;
+                        edgeTumbaML    = edgePerTumbaML * tombaCount;
+                    }
+
+                    // --- прямі полиці ---
+                    let areaShelvesM2 = 0;
+                    let edgeShelvesML = 0;
+
+                    if (shelves300 > 0) {
+                        const areaOne = (spanWidth * SHELF300_DEPTH) / 1_000_000;
+                        const edgeOne = 2 * (spanWidth + SHELF300_DEPTH) / 1000;
+                        areaShelvesM2 += areaOne * shelves300;
+                        edgeShelvesML += edgeOne * shelves300;
+                    }
+
+                    if (shelves500 > 0) {
+                        const areaOne = (spanWidth * SHELF500_DEPTH) / 1_000_000;
+                        const edgeOne = 2 * (spanWidth + SHELF500_DEPTH) / 1000;
+                        areaShelvesM2 += areaOne * shelves500;
+                        edgeShelvesML += edgeOne * shelves500;
+                    }
+
+                    // --- наклонні полиці ---
+                    let areaShelvesTiltM2 = 0;
+                    let edgeShelvesTiltML = 0;
+
+                    if (shoeShelves > 0) {
+                        const areaOneTilt = (spanWidth * SHELF500_DEPTH) / 1_000_000;
+                        const edgeOneTilt = 2 * (spanWidth + SHELF500_DEPTH) / 1000;
+                        areaShelvesTiltM2 = areaOneTilt * shoeShelves;
+                        edgeShelvesTiltML = edgeOneTilt * shoeShelves;
+                    }
+
+                    const totalAreaM2 = areaPanelsPlusStripsM2 + areaTumbaM2 + areaShelvesM2 + areaShelvesTiltM2;
+                    const totalEdgeML = edgePanelsPlusStripsML + edgeTumbaML + edgeShelvesML + edgeShelvesTiltML;
+                    if (totalAreaM2 <= 0) return null;
+
+                    const boardsCount = Math.ceil(totalAreaM2 / BOARD_AREA_M2);
+
+                    const boardCost = boardsCount * (currentDecor.price || 0);
+                    const edgeCost  = totalEdgeML * (currentDecor.edgePrice || 0);
+
+                    const cutPanels       = areaPanelsPlusStripsM2 * SERVICE_BOARD_CUT_PER_M2;
+                    const cutTumba        = areaTumbaM2             * SERVICE_BOARD_CUT_PER_M2;
+                    const cutShelves      = areaShelvesM2           * SERVICE_BOARD_CUT_PER_M2;
+                    const cutShelvesTilt  = areaShelvesTiltM2       * SERVICE_BOARD_CUT_PER_M2;
+
+                    const edgePanels      = edgePanelsPlusStripsML * SERVICE_EDGE_GLUE_PER_ML;
+                    const edgeTumba       = edgeTumbaML            * SERVICE_EDGE_GLUE_PER_ML;
+                    const edgeShelves     = edgeShelvesML          * SERVICE_EDGE_GLUE_PER_ML;
+                    const edgeShelvesTilt = edgeShelvesTiltML      * SERVICE_EDGE_GLUE_PER_ML;
+
+                    return {
+                        spanWidth,
+                        panelWidth,
+                        panelHeight,
+                        panelsCount,
+                        areaPanelsM2,
+                        edgePanelsML,
+                        areaEndStripsM2,
+                        edgeEndStripsML,
+                        areaCornersM2,
+                        edgeCornersML,
+                        areaPanelsPlusStripsM2,
+                        edgePanelsPlusStripsML,
+
+                        tombaCount,
+                        areaPerTumbaM2,
+                        areaTumbaM2,
+                        edgePerTumbaML,
+                        edgeTumbaML,
+
+                        shelves300,
+                        shelves500,
+                        shoeShelves,
+                        areaShelvesM2,
+                        edgeShelvesML,
+                        areaShelvesTiltM2,
+                        edgeShelvesTiltML,
+
+                        totalAreaM2,
+                        totalEdgeML,
+                        boardsCount,
+                        boardCost,
+                        edgeCost,
+                        cutPanels,
+                        cutTumba,
+                        cutShelves,
+                        cutShelvesTilt,
+                        edgePanels,
+                        edgeTumba,
+                        edgeShelves,
+                        edgeShelvesTilt
+                    };
+                }
+
+                // ====== кнопка РОЗРАХУВАТИ ======
+                document.getElementById("calcBtn")?.addEventListener("click", function () {
+                    const height      = num(document.getElementById("height")?.value, 0);
+                    const wallWidth   = Math.max(0, num(document.getElementById("wallWidth")?.value, 0));
+                    const sections    = Math.max(1, num(document.getElementById("sections")?.value, 1));
+                    const corners     = Math.max(0, num(document.getElementById("corners")?.value, 0));
+
+                    // --- 45° зарізи і склейка для кутів та торцевих планок ---
+                    const END_STRIPS_COUNT = 2; // 2 торцеві планки 100 мм
+
+                    // 45° зарізи
+                    const miterCutsCorners = corners * 2;          // на кожен кут 53×53 → 2 зрізи
+                    const miterCutsEnds    = END_STRIPS_COUNT * 1; // на кожен торець 100мм → 1 зріз
+                    const miterCutsCount   = miterCutsCorners + miterCutsEnds;
+
+                    // Склейка
+                    const glueCorners      = corners * 1;          // на кожен кут → 1 склейка
+                    const glueEnds         = END_STRIPS_COUNT * 1; // на кожен торець → 1 склейка
+                    const glueCornersCount = glueCorners + glueEnds;
+
+                    // Вартість
+                    const costMiterCornersUAH = miterCutsCount   * PRICE_MITER_45_TORCH_UAH;
+                    const costGlueCornersUAH  = glueCornersCount * PRICE_GLUE_CORNER_SET_UAH;
+
+                    const shelves300  = Math.max(0, num(document.getElementById("shelves300")?.value, 0));
+                    const shelves500  = Math.max(0, num(document.getElementById("shelves500")?.value, 0));
+                    const shoeShelves = Math.max(0, num(document.getElementById("shoeShelves")?.value, 0));
+                    const tubeZones   = Math.max(0, num(document.getElementById("tubeZones")?.value, 0));
+                    const tombaCount  = Math.max(0, num(document.getElementById("tumba")?.value, 0));
+                    const panels      = Math.max(0, num(document.getElementById("panels")?.value, 0));
+                    const eurRate     = Math.max(0.01, num(document.getElementById("eurRate")?.value, 40));
+                    const zonesPR679  = Math.max(0, num(document.getElementById("zonesPR679")?.value, 0));
+
+                    const priceTS603    = num(document.getElementById("priceTS603")?.value, 0);
+                    const priceTS80     = num(document.getElementById("priceTS80")?.value, 0);
+                    const priceTS100    = num(document.getElementById("priceTS100")?.value, 0);
+                    const priceBrush    = num(document.getElementById("priceBrush")?.value, 0);
+                    const priceClip     = num(document.getElementById("priceClip")?.value, 0);
+                    const priceBr300    = num(document.getElementById("priceBr300")?.value, 0);
+                    const priceBr500    = num(document.getElementById("priceBr500")?.value, 0);
+                    const priceTS70     = num(document.getElementById("priceTS70")?.value, 0);
+                    const priceTubePR   = num(document.getElementById("priceTubePR")?.value, 0);
+                    const priceHolderSL = num(document.getElementById("priceHolderSL")?.value, 0);
+                    const priceSealG    = num(document.getElementById("priceSealG")?.value, 0);
+                    const priceTSPI500  = num(document.getElementById("priceTSPI500")?.value, 0);
+                    const priceFA813    = num(document.getElementById("priceFA813")?.value, 0);
+                    const priceFA867    = num(document.getElementById("priceFA867")?.value, 0);
+
+                    // ------ TS-603 -------
+                    const wastePerSide = 60;
+                    const L_profile    = 6100;
+                    const L_usable     = L_profile - 2 * wastePerSide;
+
+                    const Lvert = height - 19;
+                    const Nvert = sections + 1;
+
+                    let piecesPerBar = Math.floor(L_usable / Lvert);
+                    if (piecesPerBar < 1) piecesPerBar = 1;
+
+                    const barsTS603 = Math.ceil(Nvert / piecesPerBar);
+
+                    const totalUsed    = Nvert * Lvert;
+                    const totalAvail   = barsTS603 * L_usable;
+                    const offcutTotal  = totalAvail - totalUsed;
+                    const offcutPerBar = offcutTotal / barsTS603;
+
+                    const qTS80        = Nvert * 3;
+                    const qTS100       = Nvert;
+                    const brushMeters  = (Lvert * Nvert) / 1000;
+                    const qClips       = panels * 8;
+
+                    // кронштейни P300
+                    const qBr300Total = shelves300 * 2;
+                    const qBr300Right = shelves300;
+                    const qBr300Left  = shelves300;
+
+                    // кронштейни P500
+                    const qBr500Total = shelves500 * 2;
+                    const qBr500Right = shelves500;
+                    const qBr500Left  = shelves500;
+
+                    // тримачі тумб
+                    const qTS70Total = tombaCount * 4;
+                    const qTS70Right = tombaCount * 2;
+                    const qTS70Left  = tombaCount * 2;
+
+                    const spanWidth = calcSpan(wallWidth, sections);
+
+                    // Ущільнювач в профілі: одна смуга на одну стійку
+                    let panelSealMeters = 0;
+                    if (Nvert > 0 && height > 0) {
+                        const PANEL_TOP_GAP = 19;
+                        const panelHeight   = height - PANEL_TOP_GAP;
+                        panelSealMeters     = (Nvert * panelHeight) / 1000;
+                    }
+
+                    // Гардеробні труби PR-2912
+                    let tubeBarsCount     = 0;
+                    let tubeHoldersPairs  = 0;
+                    let tubeSealMeters    = 0;
+                    let tubeTotalLenMM    = 0;
+
+                    if (tubeZones > 0 && wallWidth > 0 && sections > 0 && spanWidth) {
+                        const END_HOLDER_THICKNESS = 20;
+                        const TOTAL_END_OFFSET     = END_HOLDER_THICKNESS * 2;
+                        const L_one                = Math.max(0, spanWidth - TOTAL_END_OFFSET);
+
+                        tubeTotalLenMM     = L_one * tubeZones;
+                        const TUBE_BAR_LEN = 6000;
+                        tubeBarsCount      = Math.ceil(tubeTotalLenMM / TUBE_BAR_LEN);
+                        tubeHoldersPairs   = tubeZones;
+                        tubeSealMeters     = tubeTotalLenMM / 1000;
+                    }
+
+                    // Гардеробні зони з PR-679
+                    let tube679Result = null;
+                    if (zonesPR679 > 0 && wallWidth > 0 && sections > 0 && spanWidth) {
+                        const END_HOLDER_THICKNESS = 20;
+                        const TOTAL_END_OFFSET     = END_HOLDER_THICKNESS * 2;
+                        const clearSpanMM          = Math.max(0, spanWidth - TOTAL_END_OFFSET);
+                        const lengthPerZoneMM      = clearSpanMM;
+                        const totalLenMM           = lengthPerZoneMM * zonesPR679;
+                        const totalLenM            = totalLenMM / 1000;
+
+                        const BAR_LEN_PR679        = 5900;
+                        const bars                 = Math.ceil(totalLenMM / BAR_LEN_PR679);
+                        const holdersPairs         = zonesPR679;
+                        const gasketMeters         = totalLenM;
+
+                        const priceRodPR679        = PRICES.PIPE_PR679.PIPE.price;
+                        const priceHolderSL679     = PRICES.PIPE_PR679.HOLDER.price;
+                        const priceGasket679       = PRICES.PIPE_PR679.SEAL.price;
+
+                        tube679Result = {
+                            zonesPR679,
+                            clearSpanMM,
+                            totalLenM,
+                            bars,
+                            holdersPairs,
+                            gasketMeters,
+                            rodCost:    bars         * priceRodPR679,
+                            holdersCost:holdersPairs * priceHolderSL679,
+                            gasketCost: gasketMeters * priceGasket679,
+                            priceRodPR679,
+                            priceHolderSL679,
+                            priceGasket679
+                        };
+                    }
+
+                    // Наклонні полиці: FA-813 / FA-867 / TS-PI-500
+                    const qTSPI500Total = shoeShelves * 2;
+                    const qTSPI500Right = shoeShelves;
+                    const qTSPI500Left  = shoeShelves;
+                    const shoeShelvesTotalLenMM = shoeShelves > 0 && spanWidth ? spanWidth * shoeShelves : 0;
+                    const BAR_FA813 = 5200;
+                    const BAR_FA867 = 6100;
+                    const barsFA813 = shoeShelvesTotalLenMM > 0 ? Math.ceil(shoeShelvesTotalLenMM / BAR_FA813) : 0;
+                    const barsFA867 = shoeShelvesTotalLenMM > 0 ? Math.ceil(shoeShelvesTotalLenMM / BAR_FA867) : 0;
+
+                    // ДСП/кромка
+                    const decorResult = calcDecorBoardAndEdge({
+                        spanWidth,
+                        height,
+                        panelsCount: panels,
+                        tombaCount,
+                        shelves300,
+                        shelves500,
+                        shoeShelves,
+                        cornersCount: corners
+                    });
+
+                    // Вартість металу
+                    const costTS603 = barsTS603 * priceTS603;
+                    const costTS80  = qTS80     * priceTS80;
+                    const costTS100 = qTS100    * priceTS100;
+                    const costBrush = brushMeters * priceBrush;
+                    const costClips = qClips    * priceClip;
+
+                    const costBr300 = qBr300Total * priceBr300;
+                    const costBr500 = qBr500Total * priceBr500;
+                    const costTS70  = qTS70Total  * priceTS70;
+
+                    const costTubePR   = tubeBarsCount    * priceTubePR;
+                    const costHolderSL = tubeHoldersPairs * priceHolderSL;
+                    const sealPieces   = tubeSealMeters > 0 ? Math.ceil(tubeSealMeters / 3) : 0;
+                    const costSealG    = sealPieces * priceSealG;
+
+                    const costTSPI500 = qTSPI500Total * priceTSPI500;
+                    const costFA813   = barsFA813 * priceFA813;
+                    const costFA867   = barsFA867 * priceFA867;
+
+                    const costStiykaUAH   = Nvert * SERVICE_STIYKA;
+                    const packingMeters   = barsTS603 * 6.1;
+                    const costPackingUAH  = packingMeters * PACKING_RATE;
+                    const servicesUAH     = costStiykaUAH + costPackingUAH;
+
+                    const drawersPerTumba = 2;
+                    const totalDrawers    = tombaCount * drawersPerTumba;
+
+                    const costRunnersUAH       = totalDrawers * PRICE_RUNNER_SET_UAH;
+                    const costDrillTumbaUAH    = tombaCount * SERVICE_DRILL_TUMBA;
+                    const costAssemblyTumbaUAH = tombaCount * SERVICE_ASSEMBLY_TUMBA;
+
+                    // Схема
+                    const schemaVertsEl   = document.getElementById("schema-verts");
+                    const schemaShelvesEl = document.getElementById("schema-shelves");
+                    const schemaBoxesEl   = document.getElementById("schema-boxes");
+                    const schemaFixEl     = document.getElementById("schema-fix");
+
+                    if (schemaVertsEl) {
+                        schemaVertsEl.textContent =
+                            `Стійок: ${Nvert} шт · Профіль TS-603, висота ~${Lvert} мм (робоча довжина профілю ${L_usable} мм).`;
+                    }
+                    if (schemaShelvesEl) {
+                        schemaShelvesEl.textContent =
+                            `Полиці: P300 — ${shelves300} шт, P500 — ${shelves500} шт, наклонні для взуття — ${shoeShelves} шт.`;
+                    }
+                    if (schemaBoxesEl) {
+                        let boxesText =
+                            `Тумб: ${tombaCount} шт · Декоративні панелі: ${panels} шт; ` +
+                            `торці 100мм — 2 шт; кутів 53×53мм — ${corners} шт.`;
+
+                        if (decorResult && decorResult.tombaCount > 0 && decorResult.areaPerTumbaM2 > 0) {
+                            const tumbaWidth = decorResult.spanWidth ? Math.round(decorResult.spanWidth) : null;
+                            boxesText +=
+                                ` Одна тумба: ширина ~${tumbaWidth || "?"} мм, глибина 500 мм, висота 300 мм (2 шухляди по 150 мм).`;
+                        }
+                        if (tubeBarsCount > 0) {
+                            boxesText +=
+                                ` · Труби PR-2912: ${tubeZones} зон, сумарна довжина ≈${(tubeTotalLenMM / 1000).toFixed(2)} м.`;
+                        }
+                        if (tube679Result) {
+                            boxesText +=
+                                ` · Зони з круглою трубою PR-679: ${tube679Result.zonesPR679} зон (≈${tube679Result.totalLenM.toFixed(2)} м).`;
+                        }
+                        if (shoeShelves > 0) {
+                            boxesText +=
+                                ` · Наклонні полиці: ${shoeShelves} шт (TS-PI-500, профілі FA-813 та FA-867).`;
+                        }
+                        schemaBoxesEl.textContent = boxesText;
+                    }
+                    if (schemaFixEl) {
+                        schemaFixEl.textContent =
+                            `Кріплень до стіни TS-80: ${qTS80} шт · Опор TS-100: ${qTS100} шт · ` +
+                            `Щітка SE-963: ${brushMeters.toFixed(2)} м · ` +
+                            `Ущільнювач в профілі TS-603: ≈${panelSealMeters.toFixed(2)} м.`;
+                    }
+
+                    // Таблиця
+                    const items = [];
+
+                    items.push(
+                        { code: PRICES.VERTICAL.TS603.code, name: `Профіль вертикальний TS603 (робоча довжина ${L_usable}мм)`, qty: barsTS603, price: priceTS603, sum: costTS603 },
+                        { code: PRICES.VERTICAL.TS80.code,  name: "Кріплення до стіни для TS/603 (3 шт/стійка)", qty: qTS80, price: priceTS80, sum: costTS80 },
+                        { code: PRICES.VERTICAL.TS100.code, name: "Опора регульована для TS/603", qty: qTS100, price: priceTS100, sum: costTS100 },
+                        { code: PRICES.VERTICAL.BRUSH.code, name: "Щітка для TS-603, чорна (м)", qty: brushMeters, price: priceBrush, sum: costBrush },
+                        { code: PRICES.PANELS.CLIP.code,   name: "Кліпса (8 шт на панель)", qty: qClips, price: priceClip, sum: costClips },
+
+                        // P300
+                        { code: PRICES.SHELF_300.RIGHT.code, name: "Полицетримач P300×30 правий", qty: qBr300Right, price: priceBr300, sum: qBr300Right * priceBr300 },
+                        { code: PRICES.SHELF_300.LEFT.code,  name: "Полицетримач P300×30 лівий",  qty: qBr300Left,  price: priceBr300, sum: qBr300Left  * priceBr300 },
+
+                        // P500
+                        { code: PRICES.SHELF_500.RIGHT.code, name: "Полицетримач P500×30 правий", qty: qBr500Right, price: priceBr500, sum: qBr500Right * priceBr500 },
+                        { code: PRICES.SHELF_500.LEFT.code,  name: "Полицетримач P500×30 лівий",  qty: qBr500Left,  price: priceBr500, sum: qBr500Left  * priceBr500 },
+
+                        // TS-70
+                        { code: PRICES.TUMBA.HOLDER_RIGHT.code, name: "Тримач тумби TS-70 правий (2 шт/тумба)", qty: qTS70Right, price: priceTS70, sum: qTS70Right * priceTS70 },
+                        { code: PRICES.TUMBA.HOLDER_LEFT.code,  name: "Тримач тумби TS-70 лівий (2 шт/тумба)",  qty: qTS70Left,  price: priceTS70, sum: qTS70Left  * priceTS70 }
+                    );
+
+                    if (panelSealMeters > 0) {
+                        items.push({
+                            code: "GASKET-TS603",
+                            name: "Ущільнювач в профілі TS-603 (1 смуга на стійку, орієнтовно, м.п.)",
+                            qty: panelSealMeters,
+                            price: 0,
+                            sum: 0
+                        });
+                    }
+
+                    if (tubeBarsCount > 0) {
+                        items.push(
+                            { code: PRICES.PIPE_PR2912.PIPE.code, name: `Гардеробна труба PR-2912-NS, 6000мм (≈${(tubeTotalLenMM / 1000).toFixed(2)} м)`, qty: tubeBarsCount, price: priceTubePR, sum: costTubePR },
+                            { code: PRICES.PIPE_PR2912.HOLDER_SIDE.code, name: "Тримач труби PR-2912 (боковий, пара)", qty: tubeHoldersPairs, price: priceHolderSL, sum: costHolderSL },
+                            { code: PRICES.PIPE_PR2912.SEAL.code,     name: `Ущільнювач G-2912 для PR-2912 (≈${tubeSealMeters.toFixed(2)} м)`, qty: sealPieces, price: priceSealG, sum: costSealG }
+                        );
+                    }
+
+                    if (tube679Result) {
+                        items.push(
+                            { code: PRICES.PIPE_PR679.PIPE.code, name: `Гардеробна труба PR-679-NS, 5900мм (≈${tube679Result.totalLenM.toFixed(2)} м)`, qty: tube679Result.bars, price: tube679Result.priceRodPR679, sum: tube679Result.rodCost },
+                            { code: PRICES.PIPE_PR679.HOLDER.code, name: "Тримач SL-679-VN для PR-679 (пара)", qty: tube679Result.holdersPairs, price: tube679Result.priceHolderSL679, sum: tube679Result.holdersCost },
+                            { code: PRICES.PIPE_PR679.SEAL.code, name: "Ущільнювач A10.245 для PR-679", qty: tube679Result.gasketMeters, price: tube679Result.priceGasket679, sum: tube679Result.gasketCost }
+                        );
+                    }
+
+                    if (shoeShelves > 0) {
+                        items.push(
+                            { code: PRICES.SHOE_SHELF.RIGHT.code, name: "Кронштейн TS-PI 500 мм правий (1 шт/полиця)", qty: qTSPI500Right, price: priceTSPI500, sum: qTSPI500Right * priceTSPI500 },
+                            { code: PRICES.SHOE_SHELF.LEFT.code,  name: "Кронштейн TS-PI 500 мм лівий (1 шт/полиця)",  qty: qTSPI500Left,  price: priceTSPI500, sum: qTSPI500Left  * priceTSPI500 },
+                            { code: PRICES.SHOE_SHELF.DIVIDER.code, name: `Профіль для взуття 5200мм (≈${(shoeShelvesTotalLenMM / 1000).toFixed(2)} м)`, qty: barsFA813, price: priceFA813, sum: costFA813 },
+                            { code: PRICES.SHOE_SHELF.END_PROFILE.code, name: `Торцевий профіль 6100мм (≈${(shoeShelvesTotalLenMM / 1000).toFixed(2)} м)`, qty: barsFA867, price: priceFA867, sum: costFA867 }
+                        );
+                    }
+
+                    if (decorResult && currentDecor) {
+                        items.push(
+                            {
+                                code: `DSP-${currentDecor.id}`,
+                                name:
+                                    `ДСП ${currentDecor.name} (панелі + торці 100мм + кути 53мм + тумби + полиці + наклонні полиці ≈${decorResult.totalAreaM2.toFixed(2)} м²; ` +
+                                    `панель для TS-603: видима ширина LM ≈${decorResult.spanWidth.toFixed(1)} мм, розкрій LP ≈${decorResult.panelWidth.toFixed(1)} мм)`,
+                                qty: decorResult.boardsCount,
+                                price: (currentDecor.price || 0) / eurRate,
+                                sum: decorResult.boardCost / eurRate
+                            },
+                            {
+                                code: `EDGE-${currentDecor.id}`,
+                                name:
+                                    `Кромка в тон декору (усього ≈${decorResult.totalEdgeML.toFixed(1)} м.п.)`,
+                                qty: decorResult.totalEdgeML,
+                                price: (currentDecor.edgePrice || 0) / eurRate,
+                                sum: decorResult.edgeCost / eurRate
+                            }
+                        );
+
+                        if (decorResult.areaPanelsPlusStripsM2 > 0) {
+                            items.push({
+                                code: "srv-DSP-CUT-PANELS",
+                                name: `Розкрій ДСП (панелі + торці + кути ≈${decorResult.areaPanelsPlusStripsM2.toFixed(2)} м²)`,
+                                qty: decorResult.areaPanelsPlusStripsM2,
+                                price: SERVICE_BOARD_CUT_PER_M2 / eurRate,
+                                sum: decorResult.cutPanels / eurRate
+                            });
+                        }
+                        if (decorResult.areaTumbaM2 > 0) {
+                            items.push({
+                                code: "srv-DSP-CUT-TUMBA",
+                                name: `Розкрій ДСП (тумби ≈${decorResult.areaTumbaM2.toFixed(2)} м²)`,
+                                qty: decorResult.areaTumbaM2,
+                                price: SERVICE_BOARD_CUT_PER_M2 / eurRate,
+                                sum: decorResult.cutTumba / eurRate
+                            });
+                        }
+                        if (decorResult.areaShelvesM2 > 0) {
+                            items.push({
+                                code: "srv-DSP-CUT-SHELVES",
+                                name: `Розкрій ДСП (полиці ≈${decorResult.areaShelvesM2.toFixed(2)} м²)`,
+                                qty: decorResult.areaShelvesM2,
+                                price: SERVICE_BOARD_CUT_PER_M2 / eurRate,
+                                sum: decorResult.cutShelves / eurRate
+                            });
+                        }
+                        if (decorResult.areaShelvesTiltM2 > 0) {
+                            items.push({
+                                code: "srv-DSP-CUT-SHELVES-TILT",
+                                name: `Розкрій ДСП (наклонні полиці ≈${decorResult.areaShelvesTiltM2.toFixed(2)} м²)`,
+                                qty: decorResult.areaShelvesTiltM2,
+                                price: SERVICE_BOARD_CUT_PER_M2 / eurRate,
+                                sum: decorResult.cutShelvesTilt / eurRate
+                            });
+                        }
+
+                        if (decorResult.edgePanelsPlusStripsML > 0) {
+                            items.push({
+                                code: "srv-EDGE-GLUE-PANELS",
+                                name: `Наклеювання кромки (панелі + торці + кути ≈${decorResult.edgePanelsPlusStripsML.toFixed(1)} м.п.)`,
+                                qty: decorResult.edgePanelsPlusStripsML,
+                                price: SERVICE_EDGE_GLUE_PER_ML / eurRate,
+                                sum: decorResult.edgePanels / eurRate
+                            });
+                        }
+                        if (decorResult.edgeTumbaML > 0) {
+                            items.push({
+                                code: "srv-EDGE-GLUE-TUMBA",
+                                name: `Наклеювання кромки (тумби ≈${decorResult.edgeTumbaML.toFixed(1)} м.п.)`,
+                                qty: decorResult.edgeTumbaML,
+                                price: SERVICE_EDGE_GLUE_PER_ML / eurRate,
+                                sum: decorResult.edgeTumba / eurRate
+                            });
+                        }
+                        if (decorResult.edgeShelvesML > 0) {
+                            items.push({
+                                code: "srv-EDGE-GLUE-SHELVES",
+                                name: `Наклеювання кромки (полиці ≈${decorResult.edgeShelvesML.toFixed(1)} м.п.)`,
+                                qty: decorResult.edgeShelvesML,
+                                price: SERVICE_EDGE_GLUE_PER_ML / eurRate,
+                                sum: decorResult.edgeShelves / eurRate
+                            });
+                        }
+                        if (decorResult.edgeShelvesTiltML > 0) {
+                            items.push({
+                                code: "srv-EDGE-GLUE-SHELVES-TILT",
+                                name: `Наклеювання кромки (наклонні полиці ≈${decorResult.edgeShelvesTiltML.toFixed(1)} м.п.)`,
+                                qty: decorResult.edgeShelvesTiltML,
+                                price: SERVICE_EDGE_GLUE_PER_ML / eurRate,
+                                sum: decorResult.edgeShelvesTilt / eurRate
+                            });
+                        }
+                    }
+
+                    // --- Додаткові роботи: 45° та склейка ---
+                    if (miterCutsCount > 0) {
+                        items.push({
+                            code: "116295",
+                            name: "Зріз торця деталі під ±45° (кутові + торцеві планки)",
+                            qty: miterCutsCount,
+                            price: PRICE_MITER_45_TORCH_UAH / eurRate,
+                            sum: costMiterCornersUAH / eurRate
+                        });
+                    }
+
+                    if (glueCornersCount > 0) {
+                        items.push({
+                            code: "044302",
+                            name: "Стяжка/склейка деталей до 1 кв.м (кутові + торцеві планки)",
+                            qty: glueCornersCount,
+                            price: PRICE_GLUE_CORNER_SET_UAH / eurRate,
+                            sum: costGlueCornersUAH / eurRate
+                        });
+                    }
+
+                    items.push(
+                        {
+                            code: "srv-ETSEQUTIVE",
+                            name: "Виготовлення стійки ETSEQUTIVE TRIAL (087374)",
+                            qty: Nvert,
+                            price: SERVICE_STIYKA / eurRate,
+                            sum: costStiykaUAH / eurRate
+                        },
+                        {
+                            code: "srv-PACK-ALU",
+                            name: `Упаковка профілів (116349, ${PACKING_RATE} грн/м.п.)`,
+                            qty: packingMeters,
+                            price: PACKING_RATE / eurRate,
+                            sum: costPackingUAH / eurRate
+                        }
+                    );
+
+                    if (tombaCount > 0) {
+                        items.push(
+                            {
+                                code: "RUNNER-TUMBA",
+                                name: "Напрямні для шухляд тумби (2 шухляди/тумба)",
+                                qty: totalDrawers,
+                                price: PRICE_RUNNER_SET_UAH / eurRate,
+                                sum: costRunnersUAH / eurRate
+                            },
+                            {
+                                code: "srv-DRILL-TUMBA",
+                                name: "Свердління під напрямні тумби (2 шухляди/тумба)",
+                                qty: tombaCount,
+                                price: SERVICE_DRILL_TUMBA / eurRate,
+                                sum: costDrillTumbaUAH / eurRate
+                            },
+                            {
+                                code: "srv-ASSEMBLY-TUMBA",
+                                name: "Збірка тумби з 2 шухлядами",
+                                qty: tombaCount,
+                                price: SERVICE_ASSEMBLY_TUMBA / eurRate,
+                                sum: costAssemblyTumbaUAH / eurRate
+                            }
+                        );
+                    }
+
+                    let totalEur = 0;
+                    const tbody = document.getElementById("itemsBody");
+                    if (tbody) {
+                        tbody.innerHTML = "";
+                        items.forEach(item => {
+                            if (!item.qty || item.qty <= 0) return;
+                            totalEur += item.sum;
+                            const tr = document.createElement("tr");
+                            tr.innerHTML = `
           <td>${item.code}</td>
           <td>${item.name}</td>
           <td>${item.qty.toFixed(2)}</td>
           <td>${item.price.toFixed(2)}</td>
           <td>${item.sum.toFixed(2)}</td>
         `;
-        tbody.appendChild(tr);
-      });
+                            tbody.appendChild(tr);
+                        });
+                    }
+
+                    const totalUah = totalEur * eurRate;
+                    const totalEurCell = document.getElementById("totalEurCell");
+                    const totalUahCell = document.getElementById("totalUahCell");
+                    if (totalEurCell) totalEurCell.textContent = totalEur.toFixed(2);
+                    if (totalUahCell) totalUahCell.textContent = totalUah.toFixed(2);
+
+                    const summaryTextEl = document.getElementById("summaryText");
+                    if (summaryTextEl) {
+                        summaryTextEl.textContent =
+                            `Висота: ${height} мм · Ширина стіни: ${wallWidth} мм (мінус торці по 100 мм) · ` +
+                            `Секцій: ${sections} · Стійок TS-603: ${Nvert} шт · Профілів 6100мм: ${barsTS603} шт ` +
+                            `(обрізок: ${offcutPerBar.toFixed(1)} мм/шт, сумарно ${offcutTotal.toFixed(1)} мм).`;
+                    }
+
+                    const resultsEl = document.getElementById("results");
+                    if (resultsEl) resultsEl.style.display = "block";
+                });
+            </script>
+        </div>
+    </section>
+
+    <!-- Галерея -->
+    <section id="gallery">
+        <h2 class="section-headline">Приклади реалізацій eTSecutive</h2>
+        <p class="section-lead">
+            Декілька варіантів застосування системи TS-603 — від відкритих гардеробних до стінових композицій
+            у вітальнях та шоурумах.
+        </p>
+        <div class="card">
+            <div class="card-body">
+                Тут можна вивести 4–8 фото з реалізованими проектами (grid / slider).
+                Поки що плейсхолдер — підготуємо, коли будуть фінальні візуалізації.
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+        <h2 class="section-headline">Часті запитання</h2>
+
+        <div class="faq-item">
+            <div class="faq-q">Яка максимальна висота стійки TS-603?</div>
+            <div class="faq-a">
+                Рекомендована висота до 3000&nbsp;мм. В калькуляторі закладена висота профілю 6100&nbsp;мм з розкроєм
+                під конкретну систему.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-q">Чи обов’язкові панелі з ДСП?</div>
+            <div class="faq-a">
+                Ні, система може працювати як відкрита (стійки + полиці + труби). Панелі додають преміальний вигляд
+                та закривають стіну, але не є обов’язковими.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-q">У чому різниця між трубами PR-2912 і PR-679?</div>
+            <div class="faq-a">
+                PR-2912 — прямокутна гардеробна труба. PR-679 — кругла труба для особливих рішень.
+                Обидві підтримуються системою TS-603 і прораховуються в калькуляторі.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-q">Які послуги MT включені в прорахунок?</div>
+            <div class="faq-a">
+                Калькулятор враховує розкрій ДСП, наклеювання кромки, свердління для тумб, виготовлення стійок,
+                упаковку профілів та інші послуги згідно з прайсом MTU.
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section id="contact">
+        <div class="cta-final">
+            <div>
+                <h2>Готові зібрати свою систему eTSecutive?</h2>
+                <p>Надішліть розміри стіни та побажання — ми допоможемо з розрахунком і підбором конфігурації.</p>
+            </div>
+            <div class="cta-actions">
+                <button class="btn-cta primary">Звʼязатися з менеджером MT</button>
+                <button class="btn-cta ghost">Скачати PDF про систему TS-603</button>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<script>
+    // Єдина логіка теми для всієї сторінки
+    const bodyEl = document.body;
+    const themeBtn = document.getElementById('themeToggle');
+
+    function applyTheme(mode) {
+        const isDark = mode === 'dark';
+        if (isDark) {
+            bodyEl.classList.add('dark-theme');
+            themeBtn.innerHTML = '<span></span> Світла тема';
+        } else {
+            bodyEl.classList.remove('dark-theme');
+            themeBtn.innerHTML = '<span></span> Темна тема';
+        }
     }
 
-    const totalUah = totalEur * eurRate;
-    const totalEurCell = document.getElementById("totalEurCell");
-    const totalUahCell = document.getElementById("totalUahCell");
-    if (totalEurCell) totalEurCell.textContent = totalEur.toFixed(2);
-    if (totalUahCell) totalUahCell.textContent = totalUah.toFixed(2);
+    const savedTheme = localStorage.getItem('ts603Theme') || 'light';
+    applyTheme(savedTheme);
 
-    const summaryTextEl = document.getElementById("summaryText");
-    if (summaryTextEl) {
-      summaryTextEl.textContent =
-              `Висота: ${height} мм · Ширина стіни: ${wallWidth} мм (мінус торці по 100 мм) · ` +
-              `Секцій: ${sections} · Стійок TS-603: ${Nvert} шт · Профілів 6100мм: ${barsTS603} шт ` +
-              `(обрізок: ${offcutPerBar.toFixed(1)} мм/шт, сумарно ${offcutTotal.toFixed(1)} мм).`;
-    }
-
-    const resultsEl = document.getElementById("results");
-    if (resultsEl) resultsEl.style.display = "block";
-  });
+    themeBtn.addEventListener('click', () => {
+        const newTheme = bodyEl.classList.contains('dark-theme') ? 'light' : 'dark';
+        localStorage.setItem('ts603Theme', newTheme);
+        applyTheme(newTheme);
+    });
 </script>
+<script>
+    document.querySelectorAll('.accordion-header').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            const item = btn.closest('.accordion-item');
+            const isOpen = item.classList.contains('open');
+
+            // Закриваємо всі
+            document.querySelectorAll('.accordion-item').forEach(function (i) {
+                i.classList.remove('open');
+            });
+
+            // Відкриваємо поточний, якщо був закритий
+            if (!isOpen) {
+                item.classList.add('open');
+            }
+        });
+    });
+</script>
+
 </body>
 </html>
