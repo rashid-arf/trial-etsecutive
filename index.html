@@ -5,60 +5,99 @@
   <title>TRIAL eTSecutive Calculator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
+    :root {
+      /* Світла тема за замовчуванням */
+      --bg-body: #f5f5f7;
+      --bg-container: #ffffff;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --card-bg: #ffffff;
+      --border-color: #e5e7eb;
+      --table-header-bg: #f3f4f6;
+      --input-bg: #ffffff;
+      --shadow-main: 0 25px 40px rgba(15, 23, 42, 0.12);
+    }
+
+    :root.theme-dark {
+      --bg-body: #0f172a;
+      --bg-container: #020617;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --card-bg: #020617;
+      --border-color: #1f2937;
+      --table-header-bg: #020617;
+      --input-bg: #020617;
+      --shadow-main: 0 25px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #0f172a;
-      color: #e5e7eb;
+      background: var(--bg-body);
+      color: var(--text-main);
       margin: 0;
       padding: 24px;
       display: flex;
       justify-content: center;
     }
+
     .container {
       max-width: 1100px;
       width: 100%;
-      background: #020617;
+      background: var(--bg-container);
       border-radius: 16px;
       padding: 24px;
-      box-shadow: 0 25px 40px rgba(0, 0, 0, 0.6);
-      border: 1px solid #1f2937;
+      box-shadow: var(--shadow-main);
+      border: 1px solid var(--border-color);
     }
+
     h1, h2, h3 {
       margin-top: 0;
-      color: #f9fafb;
+      color: var(--text-main);
     }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 16px;
     }
+
     .card {
-      background: #020617;
+      background: var(--card-bg);
       border-radius: 12px;
       padding: 16px;
-      border: 1px solid #1f2937;
+      border: 1px solid var(--border-color);
     }
+
     label {
       display: block;
       font-size: 13px;
       margin-bottom: 4px;
-      color: #9ca3af;
+      color: var(--text-muted);
     }
-    input[type="number"] {
+
+    input[type="number"],
+    select {
       width: 100%;
       padding: 8px 10px;
       border-radius: 8px;
-      border: 1px solid #374151;
-      background: #020617;
-      color: #e5e7eb;
+      border: 1px solid #d1d5db;
+      background: var(--input-bg);
+      color: var(--text-main);
       font-size: 14px;
       box-sizing: border-box;
     }
-    input[type="number"]:focus {
+
+    input[type="number"]:focus,
+    select:focus {
       outline: none;
       border-color: #38bdf8;
       box-shadow: 0 0 0 1px #38bdf8;
     }
+
     .btn {
       margin-top: 12px;
       padding: 10px 18px;
@@ -70,79 +109,130 @@
       background: linear-gradient(135deg, #38bdf8, #22c55e);
       color: #020617;
     }
+
     .btn:active {
       transform: translateY(1px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 12px;
       font-size: 13px;
     }
+
     th, td {
       padding: 6px 8px;
       text-align: right;
-      border-bottom: 1px solid #111827;
+      border-bottom: 1px solid var(--border-color);
     }
+
     th:first-child, td:first-child {
       text-align: left;
     }
+
     th {
-      background: #020617;
+      background: var(--table-header-bg);
       position: sticky;
       top: 0;
       z-index: 1;
     }
+
     tfoot td {
       font-weight: 600;
-      border-top: 2px solid #1f2937;
+      border-top: 2px solid var(--border-color);
     }
+
     .muted {
       font-size: 12px;
-      color: #6b7280;
+      color: var(--text-muted);
     }
+
     .badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       padding: 4px 8px;
       border-radius: 999px;
-      background: rgba(56,189,248,0.1);
+      background: rgba(56,189,248,0.08);
       border: 1px solid rgba(56,189,248,0.4);
       font-size: 11px;
-      color: #e5e7eb;
+      color: var(--text-main);
       margin-bottom: 6px;
     }
+
     .single-image-wrapper {
       width: 100%;
       display: flex;
       justify-content: center;
       padding: 0 16px 16px 16px;
     }
+
     .single-image {
       display: block;
       width: 90%;
       max-width: 820px;
       margin: auto 4px auto;
       border-radius: 16px;
-      border: 1px solid #1f2937;
+      border: 1px solid var(--border-color);
       object-fit: cover;
       box-shadow:
               0 0 0 1px rgba(255,255,255,0.03),
-              0 4px 12px rgba(0,0,0,0.35);
+              0 4px 12px rgba(0,0,0,0.25);
       transition: 0.25s ease-in-out;
     }
+
     .single-image:hover {
       transform: scale(1.015);
       box-shadow:
               0 0 0 1px rgba(255,255,255,0.05),
-              0 6px 16px rgba(0,0,0,0.45);
+              0 6px 16px rgba(0,0,0,0.35);
+    }
+
+    .theme-toggle {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 8px;
+    }
+
+    #themeToggle {
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border-color);
+      background: var(--card-bg);
+      color: var(--text-main);
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.05s ease;
+    }
+
+    #themeToggle:hover {
+      background: #e5e7eb55;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    #themeToggle:active {
+      transform: translateY(1px);
+      box-shadow: none;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 12px;
+      }
+      .container {
+        padding: 16px;
+      }
     }
   </style>
 </head>
 <body>
 <div class="container">
+  <div class="theme-toggle">
+    <button id="themeToggle">🌑 Темна тема</button>
+  </div>
+
   <h1>TRIAL eTSecutive — калькулятор системи TS-603</h1>
   <p class="muted">
     Прототип розрахунку: TS-603, TS-80, TS-100, SE-963, A10.723, TS-50 (P300/P500), TS-70.
@@ -169,7 +259,7 @@
           <label for="sections">Кількість секцій</label>
           <input type="number" id="sections" value="3" min="1" />
         </div>
-        <div id="sectionsHint" style="font-size: 12px; color: #9ca3af; margin-top: 4px;"></div>
+        <div id="sectionsHint" style="font-size: 12px; color: var(--text-muted); margin-top: 4px;"></div>
 
         <div>
           <label for="corners">К-сть внутрішніх кутів (углова планка 53×53мм)</label>
@@ -213,10 +303,10 @@
         </div>
 
         <div id="decorPreview" style="margin-top: 10px; display:flex; gap:12px; align-items:center;">
-          <img id="decorImage" src="" alt="" style="width:70px;height:70px;object-fit:cover;border-radius:8px;border:1px solid #1f2937; display:none;">
+          <img id="decorImage" src="" alt="" style="width:70px;height:70px;object-fit:cover;border-radius:8px;border:1px solid var(--border-color); display:none;">
           <div>
-            <div id="decorName" style="font-size:13px;color:#e5e7eb;"></div>
-            <div id="decorPrice" style="font-size:12px;color:#6b7280;"></div>
+            <div id="decorName" style="font-size:13px;"></div>
+            <div id="decorPrice" style="font-size:12px;color:var(--text-muted);"></div>
           </div>
         </div>
 
@@ -244,19 +334,19 @@
       </div>
 
       <div style="display:flex; flex-direction:column; gap:8px; font-size:13px;">
-        <div style="padding:8px 10px; border-radius:8px; border:1px solid #1f2937; background:#020617;">
+        <div class="card">
           <strong>Вертикальні стійки</strong><br>
           <span id="schema-verts" class="muted"></span>
         </div>
-        <div style="padding:8px 10px; border-radius:8px; border:1px solid #1f2937; background:#020617;">
+        <div class="card">
           <strong>Полиці</strong><br>
           <span id="schema-shelves" class="muted"></span>
         </div>
-        <div style="padding:8px 10px; border-radius:8px; border:1px solid #1f2937; background:#020617;">
+        <div class="card">
           <strong>Тумби, панелі, труби</strong><br>
           <span id="schema-boxes" class="muted"></span>
         </div>
-        <div style="padding:8px 10px; border-radius:8px; border:1px solid #1f2937; background:#020617;">
+        <div class="card">
           <strong>Кріплення та щітка</strong><br>
           <span id="schema-fix" class="muted"></span>
         </div>
@@ -320,6 +410,28 @@
 </div>
 
 <script>
+  // ---- ТЕМА (світла / темна) ----
+  (function() {
+    const root = document.documentElement;
+    const btn = document.getElementById("themeToggle");
+    const saved = localStorage.getItem("ts603Theme");
+
+    if (saved === "dark") {
+      root.classList.add("theme-dark");
+      if (btn) btn.textContent = "🔆 Світла тема";
+    } else {
+      if (btn) btn.textContent = "🌑 Темна тема";
+    }
+
+    if (btn) {
+      btn.addEventListener("click", () => {
+        const isDark = root.classList.toggle("theme-dark");
+        localStorage.setItem("ts603Theme", isDark ? "dark" : "light");
+        btn.textContent = isDark ? "🔆 Світла тема" : "🌑 Темна тема";
+      });
+    }
+  })();
+
   const PRICES = {
     VERTICAL: {
       TS603: { code: "трTS-603-GR", price: 107.48, unit: "шт" },
@@ -410,15 +522,10 @@
   const SERVICE_DRILL_TUMBA      = 100;
   const SERVICE_ASSEMBLY_TUMBA   = 250;
   const PRICE_RUNNER_SET_UAH     = 700;
+
   // --- 45° заріз та склейка (кути + торцеві планки) ---
   const PRICE_MITER_45_TORCH_UAH = 45;   // 116295 — Зріз торця деталі під ±45°
   const PRICE_GLUE_CORNER_SET_UAH = 126; // 044302 — Стяжка деталей до 1 кв.м
-
-
-  function num(value, fallback = 0) {
-    const v = parseFloat(value);
-    return Number.isFinite(v) ? v : fallback;
-  }
 
   // ----- ініціалізація декорів -----
   const decorSelect = document.getElementById("decor");
@@ -718,23 +825,23 @@
     const wallWidth   = Math.max(0, num(document.getElementById("wallWidth")?.value, 0));
     const sections    = Math.max(1, num(document.getElementById("sections")?.value, 1));
     const corners     = Math.max(0, num(document.getElementById("corners")?.value, 0));
+
     // --- 45° зарізи і склейка для кутів та торцевих планок ---
     const END_STRIPS_COUNT = 2; // 2 торцеві планки 100 мм
 
-// 45° зарізи
+    // 45° зарізи
     const miterCutsCorners = corners * 2;          // на кожен кут 53×53 → 2 зрізи
     const miterCutsEnds    = END_STRIPS_COUNT * 1; // на кожен торець 100мм → 1 зріз
     const miterCutsCount   = miterCutsCorners + miterCutsEnds;
 
-// Склейка
+    // Склейка
     const glueCorners      = corners * 1;          // на кожен кут → 1 склейка
     const glueEnds         = END_STRIPS_COUNT * 1; // на кожен торець → 1 склейка
     const glueCornersCount = glueCorners + glueEnds;
 
-// Вартість
+    // Вартість
     const costMiterCornersUAH = miterCutsCount   * PRICE_MITER_45_TORCH_UAH;
     const costGlueCornersUAH  = glueCornersCount * PRICE_GLUE_CORNER_SET_UAH;
-
 
     const shelves300  = Math.max(0, num(document.getElementById("shelves300")?.value, 0));
     const shelves500  = Math.max(0, num(document.getElementById("shelves500")?.value, 0));
