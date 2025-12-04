@@ -856,6 +856,49 @@
             .page { padding-inline: 12px; }
         }
 
+        .client-contact {
+            margin-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: flex-end;
+            font-size: 13px;
+        }
+
+        .client-contact-fields {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .client-contact-fields > div {
+            min-width: 150px;
+            flex: 1 1 150px;
+        }
+
+        .client-contact input {
+            width: 100%;
+            padding: 6px 8px;
+            border-radius: 10px;
+            border: 1px solid rgba(148,163,184,0.6);
+            font-size: 13px;
+        }
+
+        .client-contact button {
+            padding: 10px 16px;
+            border-radius: 999px;
+            border: none;
+            background: #16a34a;
+            color: #ffffff;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .client-contact button:hover {
+            box-shadow: 0 10px 25px rgba(22,163,74,0.45);
+            transform: translateY(-1px);
+        }
+
         /* ===== базові стилі калькулятора (як у твоєму index.html) ===== */
 
         .container {
@@ -1530,7 +1573,30 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- 👇 Новий блок з контактами + кнопка -->
+                        <div class="client-contact">
+                            <div class="client-contact-fields">
+                                <div>
+                                    <label for="contactFirstName">Імʼя</label>
+                                    <input type="text" id="contactFirstName" placeholder="Напр., Андрій">
+                                </div>
+                                <div>
+                                    <label for="contactLastName">Прізвище</label>
+                                    <input type="text" id="contactLastName" placeholder="Напр., Петрович">
+                                </div>
+                                <div>
+                                    <label for="contactPhone">Телефон</label>
+                                    <input type="text" id="contactPhone" placeholder="+38 (0__) ___ __ __">
+                                </div>
+                            </div>
+
+                            <button type="button" id="sendToTelegramBtn">
+                                Надіслати заявку в MT × Systems
+                            </button>
+                        </div>
                     </div>
+
                     <div class="results-mode">
                         <span id="currentModeLabel">Режим: клієнт</span>
                         <button type="button" class="btn-manager" id="managerToggleBtn">Менеджер</button>
@@ -1545,11 +1611,7 @@
                                 <button type="button" class="btn-white" id="toClientModeBtn">Режим клієнта</button>
                                 <button type="button" class="btn-white" id="exportCsvBtn">CSV</button>
                             </div>
-                            <div class="results-actions">
-                                <button type="button" class="btn-white" id="sendToTelegramBtn">
-                                    Надіслати прорахунок
-                                </button>
-                            </div>
+
 
                         </div>
 
@@ -3024,7 +3086,7 @@
     // 🔐 тот же секрет, что TELEGRAM_FORM_SECRET в Next.js (.env)
     const TELEGRAM_FORM_SECRET = "MT_SYSTEMS"; // подставь ровно ту строку, что в .env
 
-    // Берём текущий режим из переменной currentMode, которую мы уже ведём в калькуляторе
+    // Поточний режим з калькулятора (currentMode вже є у коді вище)
     function getCurrentModeLabel() {
         return (currentMode === "manager") ? "менеджер" : "клієнт";
     }
@@ -3038,7 +3100,7 @@
         const width    = widthEl    ? (widthEl.value || "-")    : "-";
         const sections = sectionsEl ? (sectionsEl.value || "-") : "-";
 
-        // Берём сумму из уже посчитанных полей
+        // сума
         const totalEurEl = document.getElementById("clientTotalEur") || document.getElementById("totalEurCell");
         const totalUahEl = document.getElementById("clientTotalUah") || document.getElementById("totalUahCell");
 
@@ -3048,23 +3110,38 @@
         const summaryTextEl = document.getElementById("summaryText");
         const summaryText = summaryTextEl ? summaryTextEl.innerText.trim() : "";
 
-        return { height, width, sections, totalEur, totalUah, summaryText };
+        // 👤 Контактні дані
+        const firstNameEl = document.getElementById("contactFirstName");
+        const lastNameEl  = document.getElementById("contactLastName");
+        const phoneEl     = document.getElementById("contactPhone");
+
+        const firstName = firstNameEl ? firstNameEl.value.trim() : "";
+        const lastName  = lastNameEl  ? lastNameEl.value.trim()  : "";
+        const phone     = phoneEl     ? phoneEl.value.trim()     : "";
+
+        return {
+            height,
+            width,
+            sections,
+            totalEur,
+            totalUah,
+            summaryText,
+            firstName,
+            lastName,
+            phone
+        };
     }
 
-    // 👉 ДОДАЙ ЦЕ ТУТ — ПЕРЕД sendCalculationToTelegram()
+    // CSV з таблиці
     function collectCSVForTelegram() {
         let csv = "";
-
         const rows = document.querySelectorAll("#resultsTable tbody tr");
         rows.forEach(row => {
             const cols = [...row.querySelectorAll("td")].map(c => c.textContent.trim());
             csv += cols.join("; ") + "\n";
         });
-
         return csv || "CSV empty";
     }
-    // 👆 ДО ЦЬОГО МІСЦЯ
-
 
     async function sendCalculationToTelegram() {
         if (!lastCalc) {
@@ -3074,12 +3151,16 @@
 
         const mode = getCurrentModeLabel();
         const data = collectCalculationSummaryForTelegram();
+        const csv  = collectCSVForTelegram();
 
-        // ✅ ДОДАЙ ОЦЕ:
-        const csv = collectCSVForTelegram();
-
-        const text = [
+        // 1️⃣ Перше (коротке) повідомлення — для менеджера
+        const textSummary = [
             "📨 Нова заявка: TRIAL eTSecutive",
+            "",
+            "👤 Контакт:",
+            `Імʼя: *${data.firstName || "-"}*`,
+            `Прізвище: *${data.lastName || "-"}*`,
+            `Телефон: *${data.phone || "-"}*`,
             "",
             `🔁 Режим: *${mode}*`,
             "",
@@ -3089,44 +3170,67 @@
             "",
             `💰 Орієнтовна вартість: *${data.totalEur}* € або *${data.totalUah}* грн`,
             "",
-            data.summaryText ? "🧾 Підсумок:\n" + data.summaryText : "",
-            "",
-            "📄 CSV:",
-            csv
+            data.summaryText ? "🧾 Підсумок:\n" + data.summaryText : ""
+        ].join("\n");
+
+        // 2️⃣ Друге повідомлення — тільки CSV
+        const textCsv = [
+            "📄 CSV (деталі прорахунку):",
+            "```",
+            csv,
+            "```"
         ].join("\n");
 
         try {
-            const res = await fetch("https://mt-volpato.vercel.app/api/telegram", {
+            // надсилаємо перший блок
+            const res1 = await fetch("https://mt-volpato.vercel.app/api/telegram", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     secret: TELEGRAM_FORM_SECRET,
-                    text
+                    text: textSummary
                 })
             });
 
-            const json = await res.json().catch(() => ({}));
-
-            if (!res.ok || json.ok === false) {
-                console.error("Telegram error:", json);
-                alert("Не вдалось надіслати заявку. Спробуй ще раз.");
+            const json1 = await res1.json().catch(() => ({}));
+            if (!res1.ok || json1.ok === false) {
+                console.error("Telegram summary error:", json1);
+                alert("Не вдалось надіслати заявку. Спробуйте ще раз.");
                 return;
             }
 
-            alert("Заявку надіслано в MT × Systems ✅");
+            // надсилаємо другий блок з CSV (окремим повідомленням)
+            const res2 = await fetch("https://mt-volpato.vercel.app/api/telegram", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    secret: TELEGRAM_FORM_SECRET,
+                    text: textCsv
+                })
+            });
+
+            const json2 = await res2.json().catch(() => ({}));
+            if (!res2.ok || json2.ok === false) {
+                console.error("Telegram CSV error:", json2);
+                // заявку вже відправили, CSV може не дійти — скажемо про частковий успіх
+                alert("Основну заявку надіслано, але CSV не вдалося відправити.");
+                return;
+            }
+
+            alert("Заявку + CSV надіслано в MT × Systems ✅");
         } catch (e) {
             console.error(e);
             alert("Сталася помилка під час відправки.");
         }
     }
 
-
-    // навешиваем обработчик (весь DOM уже загружен, скрипт в конце файла)
+    // навішуємо обробник на кнопку під карткою клієнта
     const sendBtn = document.getElementById("sendToTelegramBtn");
     if (sendBtn) {
         sendBtn.addEventListener("click", sendCalculationToTelegram);
     }
 </script>
+
 
 
 </body>
