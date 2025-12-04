@@ -553,6 +553,61 @@
             border: 1px solid rgba(148, 163, 184, 0.4);
         }
 
+        /* картка-конфігурація */
+        #configs .config-card {
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* блок під картинку */
+        .config-card-image {
+            position: relative;
+            height: 260px;                 /* можна 240–280, як ляже по сітці */
+            padding: 12px 0;
+            background: radial-gradient(circle at top,
+            rgba(148, 163, 184, 0.28),
+            rgba(15, 23, 42, 0.9));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* показуємо всю модель цілком */
+        .config-card-image img {
+            max-height: 100%;
+            max-width: 90%;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* контент під картинкою */
+        .config-card-content {
+            padding: 12px 16px 10px;
+        }
+
+        /* Трішки підправимо дрібний текст */
+        #configs .config-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        #configs .config-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        #configs .card-body {
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* Тема dark лишається з твоїми існуючими стилями .dark-theme .card */
+
+
         /* CALCULATOR WRAPPER */
 
         .calc-wrapper {
@@ -683,7 +738,7 @@
 
         .etse-examples__grid {
             display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 20px;
         }
 
@@ -891,16 +946,6 @@
         }
 
         /* Контактна картка справа */
-
-        /*.etse-cta__contacts {*/
-        /*    flex: 0 0 280px;*/
-        /*    max-width: 320px;*/
-        /*    padding: 16px 18px;*/
-        /*    border-radius: 22px;*/
-        /*    background: rgba(6, 19, 34, 0.92);*/
-        /*    box-shadow: 0 18px 30px rgba(15, 23, 42, 0.4);*/
-        /*    font-size: 13px;*/
-        /*}*/
 
         .etse-cta__contacts {
             flex: 0 0 280px;
@@ -1258,7 +1303,7 @@
                 <h3>Максимум простору</h3>
                 <p>Приховані кріплення та мінімальна кількість видимих елементів створюють легкий,
                     чистий інтер’єр.</p>
-                <img src="images/photo9.jpg" alt="clean design" class="adv-img">
+                <img src="images/photo5.jpg" alt="clean design" class="adv-img">
             </div>
 
             <div  class="adv-card">
@@ -1454,63 +1499,77 @@
         </p>
 
         <div class="config-grid">
-            <div class="card">
-                <div class="config-card-title">Базова стінова система</div>
-                <div class="config-meta">3 секції · труби гардеробни + полиці</div>
-                <div class="card-body">
-                    Вертикальні стійки, гардеробні труби та полиці P300 / P500.
-                    Підходить для ніш, окремих стін та пральних кімнат.
+            <div class="card config-card">
+                <div class="config-card-image">
+                    <img src="images/1p.jpg"
+                         alt="Система з полицями для взуття" loading="lazy">
                 </div>
-                <div class="config-card-footer">
-                    <span class="tag-small">Стартова конфігурація</span>
+
+                <div class="config-card-content">
+                    <div class="config-card-title">Базова стінова система</div>
+                    <div class="config-meta">3 секції · полиці + труба гардеробна</div>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="config-card-title">Гардеробна з тумбами</div>
-                <div class="config-meta">3–4 секції · тумби + полиці</div>
-                <div class="card-body">
-                    Низ формується тумбами на TS-70, верх — полиці та труби гардеробни.
-                    Можливе комбінування шухляд та відкритих ніш.
+
+
+            <div class="card config-card">
+                <div class="config-card-image">
+                    <img src="images/2 p.jpg"
+                         alt="Система з полицями для взуття" loading="lazy">
                 </div>
-                <div class="config-card-footer">
-                    <span class="tag-small">Максимум зберігання</span>
+
+                <div class="config-card-content">
+                    <div class="config-card-title">Система з полицями для взуття</div>
+                    <div class="config-meta">Вертикальна панель · похилі полиці</div>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="config-card-title">Система з панелями</div>
-                <div class="config-meta">панелі на всю висоту</div>
-                <div class="card-body">
-                    Декоративні панелі з ДСП 18&nbsp;мм по всій висоті стіни.
-                    Полиці, тумби та труби гардеробни кріпляться до стійок, панелі створюють єдине поле.
+
+            <div class="card config-card">
+                <div class="config-card-image">
+                    <img src="images/4 p.jpg"
+                         alt="Система з полицями для взуття" loading="lazy">
                 </div>
-                <div class="config-card-footer">
-                    <span class="tag-small">Преміальний вигляд</span>
+
+                <div class="config-card-content">
+                    <div class="config-card-title">Система з полицями для взуття та тумбою</div>
+                    <div class="config-meta">Панель · тумба · похилі полиці</div>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="config-card-title">Кутова система</div>
-                <div class="config-meta">кут 53×53&nbsp;мм</div>
-                <div class="card-body">
-                    Вертикальні стійки з’єднуються кутовою планкою 53×53&nbsp;мм.
-                    Дає можливість якісно обіграти кутові гардеробні та стінові рішення.
+            <div class="card config-card">
+                <div class="config-card-image">
+                    <img src="images/5 p.jpg"
+                         alt="Система з полицями для взуття" loading="lazy">
                 </div>
-                <div class="config-card-footer">
-                    <span class="tag-small">Кути та ніші</span>
+
+                <div class="config-card-content">
+                    <div class="config-card-title">Гардеробна з тумбою</div>
+                    <div class="config-meta">Панель · тумба з шухлядами · верхня полиця</div>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="config-card-title">Повна гардеробна eTSecutive</div>
-                <div class="config-meta">тумби + панелі + полиці + труби гардеробни</div>
-                <div class="card-body">
-                    Комплексне рішення: панелі, тумби з шухлядами, полиці, труби гардеробни, нахилені полиці для взуття.
-                    Прораховується у калькуляторі MT.
+            <div class="card config-card">
+                <div class="config-card-image">
+                    <img src="images/6 p.jpg"
+                         alt="Система з полицями для взуття" loading="lazy">
                 </div>
-                <div class="config-card-footer">
-                    <span class="tag-small">Рекомендація MT</span>
+
+                <div class="config-card-content">
+                    <div class="config-card-title">Гардеробна з тумбою та полицями</div>
+                    <div class="config-meta">Панель · тумба · горизонтальні полиці</div>
+                </div>
+            </div>
+            <div class="card config-card">
+                <div class="config-card-image">
+                    <img src="images/11 p.jpg"
+                         alt="Система з полицями для взуття" loading="lazy">
+                </div>
+
+                <div class="config-card-content">
+                    <div class="config-card-title">Модуль із тумбою та верхньою полицею</div>
+                    <div class="config-meta">Компактний модуль для ніш та шоурумів</div>
                 </div>
             </div>
         </div>
@@ -1592,7 +1651,7 @@
                             </div>
 
                             <div id="decorPreview" style="margin-top: 10px; display:flex; gap:12px; align-items:center;">
-                                <img id="decorImage" src="" alt="" style="width:70px;height:70px;object-fit:cover;border-radius:8px;border:1px solid var(--border-color); display:none;">
+                                <img id="decorImage" src="" alt="" style="width:150px;height:150px;object-fit:cover;border-radius:8px;border:1px solid var(--border-color); display:none;">
                                 <div>
                                     <div id="decorName" style="font-size:13px;"></div>
                                     <div id="decorPrice" style="font-size:12px;color:var(--text-muted);"></div>
@@ -2773,9 +2832,7 @@
         </div>
     </section>
 
-    <!-- Галерея -->
-
-    <!-- ===== Приклади реалізації eTSecutive ===== -->
+        <!-- ===== Приклади реалізації eTSecutive ===== -->
     <section class="etse-examples" id="gallery">
         <div class="etse-examples__inner">
             <div class="etse-examples__header">
@@ -2803,7 +2860,7 @@
                         <img src="images/photo3.jpg" alt="Преміальна гардеробна з островом" loading="lazy">
                     </div>
                     <figcaption class="etse-examples__caption">
-                        Преміальна гардеробна&nbsp;• темне дерево, острів, відкриті зони зберігання
+                        Преміальна гардеробна&nbsp;• темне дерево, острів, відкриті зони
                     </figcaption>
                 </figure>
 
@@ -2827,45 +2884,45 @@
                     </figcaption>
                 </figure>
 
-                <!-- 5 -->
-                <figure class="etse-examples__card">
-                    <div class="etse-examples__image-wrap">
-                        <img src=images/mt_magnit.jpg alt="Тумба, труба та підсвітка у гардеробній" loading="lazy">
-                    </div>
-                    <figcaption class="etse-examples__caption">
-                        Реальна експозиція MT • стінова система eTSecutive з тумбами та полицями.
-                    </figcaption>
-                </figure>
+<!--                &lt;!&ndash; 5 &ndash;&gt;-->
+<!--                <figure class="etse-examples__card">-->
+<!--                    <div class="etse-examples__image-wrap">-->
+<!--                        <img src=images/mt_magnit.jpg alt="Тумба, труба та підсвітка у гардеробній" loading="lazy">-->
+<!--                    </div>-->
+<!--                    <figcaption class="etse-examples__caption">-->
+<!--                        Реальна експозиція MT • стінова система eTSecutive з тумбами та полицями.-->
+<!--                    </figcaption>-->
+<!--                </figure>-->
 
-                <!-- 6 -->
-                <figure class="etse-examples__card">
-                    <div class="etse-examples__image-wrap">
-                        <img src="images/photo8.jpg" alt="Нахилені полиці для взуття" loading="lazy">
-                    </div>
-                    <figcaption class="etse-examples__caption">
-                        Нахилені полиці для взуття&nbsp;• модуль преміум-бутика, профіль поперечний.
-                    </figcaption>
-                </figure>
+<!--                &lt;!&ndash; 6 &ndash;&gt;-->
+<!--                <figure class="etse-examples__card">-->
+<!--                    <div class="etse-examples__image-wrap">-->
+<!--                        <img src="images/photo8.jpg" alt="Нахилені полиці для взуття" loading="lazy">-->
+<!--                    </div>-->
+<!--                    <figcaption class="etse-examples__caption">-->
+<!--                        Нахилені полиці для взуття&nbsp;• модуль преміум-бутика, профіль поперечний.-->
+<!--                    </figcaption>-->
+<!--                </figure>-->
 
-                <!-- 7 -->
-                <figure class="etse-examples__card">
-                    <div class="etse-examples__image-wrap">
-                        <img src="images/photo9.jpg" alt="Реальна експозиція eTSecutive у шоурумі MT" loading="lazy">
-                    </div>
-                    <figcaption class="etse-examples__caption">
-                        Реальна експозиція MT&nbsp;• стінова система eTSecutive з тумбами та полицями
-                    </figcaption>
-                </figure>
+<!--                &lt;!&ndash; 7 &ndash;&gt;-->
+<!--                <figure class="etse-examples__card">-->
+<!--                    <div class="etse-examples__image-wrap">-->
+<!--                        <img src="images/photo9.jpg" alt="Реальна експозиція eTSecutive у шоурумі MT" loading="lazy">-->
+<!--                    </div>-->
+<!--                    <figcaption class="etse-examples__caption">-->
+<!--                        Реальна експозиція MT&nbsp;• стінова система eTSecutive з тумбами та полицями-->
+<!--                    </figcaption>-->
+<!--                </figure>-->
 
-                <!-- 8 -->
-                <figure class="etse-examples__card">
-                    <div class="etse-examples__image-wrap">
-                        <img src="images/photo10.jpg"  alt="Вітрина / шоурум з панелями та полицями" loading="lazy">
-                    </div>
-                    <figcaption class="etse-examples__caption">
-                        Шоурум-формат&nbsp;• панелі, полиці та експозиційні модулі на основі TS-603
-                    </figcaption>
-                </figure>
+<!--                &lt;!&ndash; 8 &ndash;&gt;-->
+<!--                <figure class="etse-examples__card">-->
+<!--                    <div class="etse-examples__image-wrap">-->
+<!--                        <img src="images/photo10.jpg"  alt="Вітрина / шоурум з панелями та полицями" loading="lazy">-->
+<!--                    </div>-->
+<!--                    <figcaption class="etse-examples__caption">-->
+<!--                        Шоурум-формат&nbsp;• панелі, полиці та експозиційні модулі на основі TS-603-->
+<!--                    </figcaption>-->
+<!--                </figure>-->
             </div>
         </div>
     </section>
