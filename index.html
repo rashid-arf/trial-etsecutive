@@ -1526,7 +1526,7 @@
                             <div class="client-total-extra">
                                 <div>або <span id="clientTotalUah">0.00</span> грн</div>
                                 <div class="client-note">
-                                    Ціна включає профілі, ДСП та послуги згідно обраної конфігурації.
+                                    Ціна включає профілі, ДСП (при виборі) та послуги згідно обраної конфігурації.
                                 </div>
                             </div>
                         </div>
@@ -3051,31 +3051,20 @@
         return { height, width, sections, totalEur, totalUah, summaryText };
     }
 
-    function buildCsvFromResultsTable() {
-        const table = document.getElementById("resultsTable");
-        if (!table) return "";
+    // 👉 ДОДАЙ ЦЕ ТУТ — ПЕРЕД sendCalculationToTelegram()
+    function collectCSVForTelegram() {
+        let csv = "";
 
-        const rows = [];
-        const trList = table.querySelectorAll("tr");
-
-        trList.forEach(tr => {
-            const cells = tr.querySelectorAll("th, td");
-            if (!cells.length) return;
-
-            const row = [];
-            cells.forEach(cell => {
-                let text = cell.textContent.replace(/\s+/g, " ").trim();
-                // екрануємо лапки
-                text = '"' + text.replace(/"/g, '""') + '"';
-                row.push(text);
-            });
-
-            // для наших реалій зручно через ; (Excel / Google Sheets ок)
-            rows.push(row.join(";"));
+        const rows = document.querySelectorAll("#resultsTable tbody tr");
+        rows.forEach(row => {
+            const cols = [...row.querySelectorAll("td")].map(c => c.textContent.trim());
+            csv += cols.join("; ") + "\n";
         });
 
-        return rows.join("\n");
+        return csv || "CSV empty";
     }
+    // 👆 ДО ЦЬОГО МІСЦЯ
+
 
     async function sendCalculationToTelegram() {
         if (!lastCalc) {
@@ -3097,8 +3086,12 @@
             "",
             `💰 Орієнтовна вартість: *${data.totalEur}* € або *${data.totalUah}* грн`,
             "",
-            data.summaryText ? "🧾 Підсумок:\n" + data.summaryText : ""
+            data.summaryText ? "🧾 Підсумок:\n" + data.summaryText : "",
+            "",
+            "📄 CSV:",
+            csv
         ].join("\n");
+
 
         try {
             const res = await fetch("https://mt-volpato.vercel.app/api/telegram", {
