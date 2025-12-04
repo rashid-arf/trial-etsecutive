@@ -1546,7 +1546,7 @@
                                 <button type="button" class="btn-white" id="exportCsvBtn">CSV</button>
                             </div>
                             <div class="results-actions">
-                                <button type="button" class="btn-primary" id="sendToTelegramBtn">
+                                <button type="button" class="btn-white" id="sendToTelegramBtn">
                                     Надіслати прорахунок
                                 </button>
                             </div>
@@ -1554,7 +1554,7 @@
                         </div>
 
                         <div style="max-height: 320px; overflow:auto; margin-top: 4px;">
-                            <table>
+                            <table id="resultsTable">
                                 <thead>
                                 <tr>
                                     <th>Артикул</th>
@@ -3049,6 +3049,32 @@
         const summaryText = summaryTextEl ? summaryTextEl.innerText.trim() : "";
 
         return { height, width, sections, totalEur, totalUah, summaryText };
+    }
+
+    function buildCsvFromResultsTable() {
+        const table = document.getElementById("resultsTable");
+        if (!table) return "";
+
+        const rows = [];
+        const trList = table.querySelectorAll("tr");
+
+        trList.forEach(tr => {
+            const cells = tr.querySelectorAll("th, td");
+            if (!cells.length) return;
+
+            const row = [];
+            cells.forEach(cell => {
+                let text = cell.textContent.replace(/\s+/g, " ").trim();
+                // екрануємо лапки
+                text = '"' + text.replace(/"/g, '""') + '"';
+                row.push(text);
+            });
+
+            // для наших реалій зручно через ; (Excel / Google Sheets ок)
+            rows.push(row.join(";"));
+        });
+
+        return rows.join("\n");
     }
 
     async function sendCalculationToTelegram() {
