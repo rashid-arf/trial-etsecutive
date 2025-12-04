@@ -181,6 +181,28 @@
             background: #f0f2f5;
             border: 1px solid rgba(148,163,184,0.6);
         }
+
+        .hero-image {
+            position: relative;
+            overflow: hidden;
+            border-radius: 24px;        /* якщо потрібно згладити */
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.45s ease, opacity 0.45s ease;
+            transform-origin: center;
+        }
+
+        .hero-image:hover img {
+            transform: scale(1.1);
+            opacity: 0.9;
+        }
+
+
+
         .dark-theme .hero-tags span {
             background: rgba(15,23,42,0.4);
             color: #e5e7eb;
@@ -603,6 +625,13 @@
         #configs .card-body {
             font-size: 13px;
             line-height: 1.5;
+        }
+        #configs .config-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 32px rgba(15,23,42,0.35);
+        }
+        #configs .config-card {
+            transition: transform .18s ease, box-shadow .18s ease;
         }
 
         /* Тема dark лишається з твоїми існуючими стилями .dark-theme .card */
@@ -1132,20 +1161,28 @@
         table thead th {
             background: rgba(148,163,184,0.12);
         }
-        .single-image-wrapper {
-            width: 100%;
-            padding: 0 16px 16px;
 
-        }
-        .single-image-frame {
-            border-radius: 18px;
+        .single-image-wrapper {
+            position: relative;
             overflow: hidden;
-            box-shadow: 0 10px 25px rgba(15,23,42,0.5);
+            border-radius: 24px; /* якщо треба така сама форма, як в hero */
         }
+
+        .single-image-frame {
+            overflow: hidden;
+        }
+
         .single-image {
             width: 100%;
+            height: auto;
             display: block;
-            object-fit: cover;
+            transition: transform 0.45s ease, opacity 0.45s ease;
+            transform-origin: center;
+        }
+
+        .single-image-wrapper:hover .single-image {
+            transform: scale(1.06);
+            opacity: 0.96;
         }
     </style>
 </head>
