@@ -3075,6 +3075,9 @@
         const mode = getCurrentModeLabel();
         const data = collectCalculationSummaryForTelegram();
 
+        // ✅ ДОДАЙ ОЦЕ:
+        const csv = collectCSVForTelegram();
+
         const text = [
             "📨 Нова заявка: TRIAL eTSecutive",
             "",
@@ -3091,7 +3094,6 @@
             "📄 CSV:",
             csv
         ].join("\n");
-
 
         try {
             const res = await fetch("https://mt-volpato.vercel.app/api/telegram", {
@@ -3117,6 +3119,7 @@
             alert("Сталася помилка під час відправки.");
         }
     }
+
 
     // навешиваем обработчик (весь DOM уже загружен, скрипт в конце файла)
     const sendBtn = document.getElementById("sendToTelegramBtn");
