@@ -3153,16 +3153,21 @@
         const data = collectCalculationSummaryForTelegram();
         const csv  = collectCSVForTelegram();
 
-        // ✅ Валідація контактів
+// Валідація контактів
         if (!data.firstName || data.firstName.trim() === "") {
             alert("Будь ласка, вкажіть імʼя.");
             return;
         }
 
-        if (!data.phone || data.phone.trim() === "") {
-            alert("Будь ласка, вкажіть номер телефону.");
+// Валідація телефону (формат 0XXXXXXXXX)
+        const phone = data.phone.trim();
+        const phoneRegex = /^0\d{9}$/;
+
+        if (!phoneRegex.test(phone)) {
+            alert("Невірний формат телефону.\nВикористовуйте формат: 0XXXXXXXXX");
             return;
         }
+
 
         // 1️⃣ Перше (коротке) повідомлення — для менеджера
         const textSummary = [
