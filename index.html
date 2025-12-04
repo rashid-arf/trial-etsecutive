@@ -1579,15 +1579,15 @@
                             <div class="client-contact-fields">
                                 <div>
                                     <label for="contactFirstName">Імʼя</label>
-                                    <input type="text" id="contactFirstName" placeholder="Напр., Андрій">
+                                    <input type="text" id="contactFirstName" >
                                 </div>
                                 <div>
                                     <label for="contactLastName">Прізвище</label>
-                                    <input type="text" id="contactLastName" placeholder="Напр., Петрович">
+                                    <input type="text" id="contactLastName" >
                                 </div>
                                 <div>
                                     <label for="contactPhone">Телефон</label>
-                                    <input type="text" id="contactPhone" placeholder="+38 (0__) ___ __ __">
+                                    <input type="text" id="contactPhone">
                                 </div>
                             </div>
 
@@ -3152,6 +3152,17 @@
         const mode = getCurrentModeLabel();
         const data = collectCalculationSummaryForTelegram();
         const csv  = collectCSVForTelegram();
+
+        // ✅ Валідація контактів
+        if (!data.firstName || data.firstName.trim() === "") {
+            alert("Будь ласка, вкажіть імʼя.");
+            return;
+        }
+
+        if (!data.phone || data.phone.trim() === "") {
+            alert("Будь ласка, вкажіть номер телефону.");
+            return;
+        }
 
         // 1️⃣ Перше (коротке) повідомлення — для менеджера
         const textSummary = [
