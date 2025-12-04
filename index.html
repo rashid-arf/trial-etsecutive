@@ -246,6 +246,24 @@
                 max-width: 100%;
             }
         }
+        /* MOBILE FIX */
+        @media (max-width: 480px) {
+
+            .hero-image {
+                width: 100%;
+                height: auto !important;
+                border-radius: 16px !important;
+                overflow: hidden;
+            }
+
+            .hero-image img {
+                width: 100%;
+                height: auto !important;
+                object-fit: cover;
+                border-radius: 16px !important;
+            }
+
+        }
 
         /* SECTIONS */
 
@@ -630,6 +648,112 @@
             font-size: 13px;
         }
 
+        /* ===== Приклади реалізації eTSecutive ===== */
+
+        .etse-examples {
+            padding: 72px 0 80px;
+        }
+
+        .etse-examples__inner {
+            max-width: 1220px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        .etse-examples__header {
+            max-width: 720px;
+            margin-bottom: 32px;
+        }
+
+        .etse-examples__title {
+            font-size: 28px;
+            line-height: 1.25;
+            font-weight: 700;
+            margin: 0 0 8px;
+        }
+
+        .etse-examples__subtitle {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.6;
+            opacity: 0.85;
+        }
+
+        /* grid */
+
+        .etse-examples__grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .etse-examples__card {
+            margin: 0;
+            border-radius: 18px;
+            overflow: hidden;
+            background: rgba(5, 14, 35, 0.8);          /* темний фон для dark */
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        /* якщо є світла тема з класом .light-theme на body */
+        body.light-theme .etse-examples__card {
+            background: #ffffff;
+            border-color: rgba(15, 23, 42, 0.08);
+        }
+
+        .etse-examples__image-wrap {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 4 / 3;
+        }
+
+        .etse-examples__image-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease, filter 0.5s ease;
+        }
+
+        .etse-examples__card:hover .etse-examples__image-wrap img {
+            transform: scale(1.04);
+            filter: brightness(1.05);
+        }
+
+        .etse-examples__caption {
+            padding: 12px 14px 14px;
+            font-size: 13px;
+            line-height: 1.5;
+            opacity: 0.9;
+        }
+
+        /* ------- адаптив ------- */
+
+        @media (max-width: 1100px) {
+            .etse-examples__grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 900px) {
+            .etse-examples {
+                padding: 56px 0 64px;
+            }
+            .etse-examples__grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            .etse-examples__grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+
         /* FAQ */
 
         .faq-item {
@@ -923,7 +1047,7 @@
         <h2 class="section-title">Переваги системи TS-603</h2>
         <p class="section-sub">
             eTSecutive поєднує технологічний алюмінієвий каркас TS-603,
-            декоративні панелі з ДСП, полиці, тумби та труби — усе в одному рішенні.
+            декоративні панелі з ДСП, полиці, тумби та труби гардеробни — усе в одному рішенні.
         </p>
 
         <div class="adv-grid">
@@ -952,11 +1076,11 @@
 
             <!-- 3. Полиці -->
             <div class="adv-card">
-                <span class="adv-tag orange">Полички та труби</span>
+                <span class="adv-tag orange">Полички та труби гардеробни</span>
                 <h3>Полиці та гардеробні труби</h3>
                 <p>
                     Полиці P300/P500, нахилені полиці для взуття.
-                    Труби PR-2912 та PR-679 з ущільнювачем та тримачами.
+                    труби гардеробни PR-2912 та PR-679 з ущільнювачем та тримачами.
                 </p>
                 <img src="images/tech-shelves.jpg" alt="Полиці системи" class="adv-img">
             </div>
@@ -1056,8 +1180,7 @@
                         <ul>
                             <li>Панелі Cleaf/SAIB товщиною 18&nbsp;мм кріпляться на кліпси Clip-TS.</li>
                             <li>На одну стійку – 8 кліпс (4&nbsp;зверху + 4&nbsp;знизу) на панель.</li>
-                            <li>Технологічний зазор між панелями X = 4–7&nbsp;мм + гумовий
-                                ущільнювач у профілі.</li>
+                            <li>Технологічний зазор між панелями X = 4–7&nbsp;мм + щітка у профілі.</li>
                             <li>Щітка SE-963 закриває профіль по периметру та візуально
                                 об’єднує панелі.</li>
                         </ul>
@@ -1079,9 +1202,9 @@
                 <div class="accordion-panel">
                     <div class="accordion-text">
                         <ul>
-                            <li>Полиці P300 і P500 кріпляться на TS-50 / TS-60 по глибині.</li>
+                            <li>Полиці P300 і P500 кріпляться на тримачі TS-50 / TS-60.</li>
                             <li>Нахилені полиці для взуття – спеціальні кронштейни з упором.</li>
-                            <li>Товщина полиць з ДСП – 18&nbsp;мм, кромка по периметру.</li>
+                            <li>Товщина полиць з ДСП – 18&nbsp;мм / 25 мм, кромка по периметру.</li>
                             <li>Варіанти глибини й ширини – згідно калькулятора TS-603.</li>
                         </ul>
                     </div>
@@ -1096,16 +1219,15 @@
             <!-- 5. Тумби -->
             <div class="accordion-item">
                 <button class="accordion-header">
-                    <span>Тумби, комоди, бокси на TS-70</span>
+                    <span>Тумби, комоди, бокси на кронштейнах TS-70</span>
                     <span class="accordion-icon">⌄</span>
                 </button>
                 <div class="accordion-panel">
                     <div class="accordion-text">
                         <ul>
                             <li>Тумби підвішуються на кронштейни TS-70, які фіксуються у паз профілю.</li>
-                            <li>Можливі комплектації з 1–2 шухлядами, фасади – ДСП або алюмінієві.</li>
+                            <li>Можливі комплектації з 1–2 шухлядами, фасади – ДСП або на вибор.</li>
                             <li>Ширина тумби підбирається по секції (кратна модулю стійок).</li>
-                            <li>Навантаження на тумбу залежить від типу напрямних (див. каталог).</li>
                         </ul>
                     </div>
                     <div class="accordion-image">
@@ -1125,7 +1247,7 @@
                 <div class="accordion-panel">
                     <div class="accordion-text">
                         <ul>
-                            <li>Труба PR-2912 – рямакутна, з гумовим ущільнювачем G-2912.</li>
+                            <li>Труба PR-2912 – прямокутна, з гумовим ущільнювачем G-2912.</li>
                             <li>Кругла труба PR-679 – для окремих зон/вішаків.</li>
                             <li>Тримачі труб PR-2912-NS монтуються у паз TS-603.</li>
                             <li>Довжина труб розраховується калькулятором з урахуванням торців.</li>
@@ -1177,7 +1299,7 @@
         <div class="config-grid">
             <div class="card">
                 <div class="config-card-title">Базова стінова система</div>
-                <div class="config-meta">3 секції · труби + полиці</div>
+                <div class="config-meta">3 секції · труби гардеробни + полиці</div>
                 <div class="card-body">
                     Вертикальні стійки, гардеробні труби та полиці P300 / P500.
                     Підходить для ніш, окремих стін та пральних кімнат.
@@ -1191,7 +1313,7 @@
                 <div class="config-card-title">Гардеробна з тумбами</div>
                 <div class="config-meta">3–4 секції · тумби + полиці</div>
                 <div class="card-body">
-                    Низ формується тумбами на TS-70, верх — полиці та труби.
+                    Низ формується тумбами на TS-70, верх — полиці та труби гардеробни.
                     Можливе комбінування шухляд та відкритих ніш.
                 </div>
                 <div class="config-card-footer">
@@ -1204,7 +1326,7 @@
                 <div class="config-meta">панелі на всю висоту</div>
                 <div class="card-body">
                     Декоративні панелі з ДСП 18&nbsp;мм по всій висоті стіни.
-                    Полиці, тумби та труби кріпляться до стійок, панелі створюють єдине поле.
+                    Полиці, тумби та труби гардеробни кріпляться до стійок, панелі створюють єдине поле.
                 </div>
                 <div class="config-card-footer">
                     <span class="tag-small">Преміальний вигляд</span>
@@ -1225,9 +1347,9 @@
 
             <div class="card">
                 <div class="config-card-title">Повна гардеробна eTSecutive</div>
-                <div class="config-meta">тумби + панелі + полиці + труби</div>
+                <div class="config-meta">тумби + панелі + полиці + труби гардеробни</div>
                 <div class="card-body">
-                    Комплексне рішення: панелі, тумби з шухлядами, полиці, труби, нахилені полиці для взуття.
+                    Комплексне рішення: панелі, тумби з шухлядами, полиці, труби гардеробни, нахилені полиці для взуття.
                     Прораховується у калькуляторі MT.
                 </div>
                 <div class="config-card-footer">
@@ -1353,7 +1475,7 @@
                                 <span id="schema-shelves" class="muted"></span>
                             </div>
                             <div class="card">
-                                <strong>Тумби, панелі, труби</strong><br>
+                                <strong>Тумби, панелі, труби гардеробни</strong><br>
                                 <span id="schema-boxes" class="muted"></span>
                             </div>
                             <div class="card">
@@ -1663,7 +1785,7 @@
                     const currentSections = Number(sectionsInput.value || 0);
                     const currentSpan = currentSections ? calcSpan(widthWall, currentSections) : null;
 
-                    let text = `Рекомендація MTU: ${rec.sections} секц. (~${rec.span.toFixed(0)} мм між торцевими планками).`;
+                    let text = `Рекомендація MT: ${rec.sections} секц. (~${rec.span.toFixed(0)} мм між торцевими планками).`;
 
                     if (currentSpan && currentSections) {
                         text += ` Зараз: ${currentSections} секц. (~${currentSpan.toFixed(0)} мм).`;
@@ -2096,7 +2218,7 @@
                         }
                         if (tubeBarsCount > 0) {
                             boxesText +=
-                                ` · Труби PR-2912: ${tubeZones} зон, сумарна довжина ≈${(tubeTotalLenMM / 1000).toFixed(2)} м.`;
+                                ` · труби гардеробни PR-2912: ${tubeZones} зон, сумарна довжина ≈${(tubeTotalLenMM / 1000).toFixed(2)} м.`;
                         }
                         if (tube679Result) {
                             boxesText +=
@@ -2470,16 +2592,98 @@
     </section>
 
     <!-- Галерея -->
-    <section id="gallery">
-        <h2 class="section-headline">Приклади реалізацій eTSecutive</h2>
-        <p class="section-lead">
-            Декілька варіантів застосування системи TS-603 — від відкритих гардеробних до стінових композицій
-            у вітальнях та шоурумах.
-        </p>
-        <div class="card">
-            <div class="card-body">
-                Тут можна вивести 4–8 фото з реалізованими проектами (grid / slider).
-                Поки що плейсхолдер — підготуємо, коли будуть фінальні візуалізації.
+
+    <!-- ===== Приклади реалізації eTSecutive ===== -->
+    <section class="etse-examples" id="gallery">
+        <div class="etse-examples__inner">
+            <div class="etse-examples__header">
+                <h2 class="etse-examples__title">Приклади реалізації eTSecutive</h2>
+                <p class="etse-examples__subtitle">
+                    Кілька реалізованих інтер’єрів на базі профілю TS-603: від домашніх гардеробних до
+                    шоурумів та стінових композицій у магазинах.
+                </p>
+            </div>
+
+            <div class="etse-examples__grid">
+                <!-- 1 -->
+                <figure class="etse-examples__card">
+                    <div class="etse-examples__image-wrap">
+                        <img src="images/photo2.jpg" alt="Гардеробна стінова система eTSecutive" loading="lazy">
+                    </div>
+                    <figcaption class="etse-examples__caption">
+                        Домашня гардеробна&nbsp;• стінова система з тумбами та полицями
+                    </figcaption>
+                </figure>
+
+                <!-- 2 -->
+                <figure class="etse-examples__card">
+                    <div class="etse-examples__image-wrap">
+                        <img src="images/photo3.jpg" alt="Преміальна гардеробна з островом" loading="lazy">
+                    </div>
+                    <figcaption class="etse-examples__caption">
+                        Преміальна гардеробна&nbsp;• темне дерево, острів, відкриті зони зберігання
+                    </figcaption>
+                </figure>
+
+                <!-- 3 -->
+                <figure class="etse-examples__card">
+                    <div class="etse-examples__image-wrap">
+                        <img src="images/photo5.jpg"  alt="Світла гардеробна з панелями та полицями" loading="lazy">
+                    </div>
+                    <figcaption class="etse-examples__caption">
+                       Гардеробна&nbsp;• панелі Cleaf / SAIB, полиці та труби PR-2912
+                    </figcaption>
+                </figure>
+
+                <!-- 4 -->
+                <figure class="etse-examples__card">
+                    <div class="etse-examples__image-wrap">
+                        <img src="images/photo1.jpg"  alt="Деталь полиць та панелей системи eTSecutive" loading="lazy">
+                    </div>
+                    <figcaption class="etse-examples__caption">
+                        Деталь полиць&nbsp;• мінімальні видимі елементи, максимум простору
+                    </figcaption>
+                </figure>
+
+                <!-- 5 -->
+                <figure class="etse-examples__card">
+                    <div class="etse-examples__image-wrap">
+                        <img src=images/mt_magnit.jpg alt="Тумба, труба та підсвітка у гардеробній" loading="lazy">
+                    </div>
+                    <figcaption class="etse-examples__caption">
+                        Сценарій «туалетний столик»&nbsp;• підвісна тумба, труба, LED-підсвітка
+                    </figcaption>
+                </figure>
+
+                <!-- 6 -->
+                <figure class="etse-examples__card">
+                    <div class="etse-examples__image-wrap">
+                        <img src="images/photo8.jpg" alt="Нахилені полиці для взуття" loading="lazy">
+                    </div>
+                    <figcaption class="etse-examples__caption">
+                        Нахилені полиці для взуття&nbsp;• модуль преміум-бутику
+                    </figcaption>
+                </figure>
+
+                <!-- 7 -->
+                <figure class="etse-examples__card">
+                    <div class="etse-examples__image-wrap">
+                        <img src="images/photo9.jpg" alt="Реальна експозиція eTSecutive у шоурумі MT" loading="lazy">
+                    </div>
+                    <figcaption class="etse-examples__caption">
+                        Реальна експозиція MT&nbsp;• стінова система eTSecutive з тумбами та полицями
+                    </figcaption>
+                </figure>
+
+                <!-- 8 -->
+                <figure class="etse-examples__card">
+                    <div class="etse-examples__image-wrap">
+                        <img src="images/photo10.jpg"  alt="Вітрина / шоурум з панелями та полицями" loading="lazy">
+                    </div>
+                    <figcaption class="etse-examples__caption">
+                        Шоурум-формат&nbsp;• панелі, полиці та експозиційні модулі на основі TS-603
+                    </figcaption>
+                </figure>
             </div>
         </div>
     </section>
@@ -2538,7 +2742,7 @@
                     <div class="faq-body">
                         <p>
                             Ні. Система може працювати як <strong>відкрита</strong>:
-                            стійки + полиці + труби без панелей. Панелі Cleaf/SAIB
+                            стійки + полиці + труби гардеробни без панелей. Панелі Cleaf/SAIB
                             товщиною <strong>18&nbsp;мм</strong> додають преміальний
                             вигляд, закривають стіну та дозволяють витримати
                             технологічний зазор між панелями <strong>4–7&nbsp;мм</strong>
@@ -2591,7 +2795,7 @@
                     <div class="faq-body">
                         <p>
                             Так. eTSecutive — <strong>повністю модульна</strong> система.
-                            Полиці, тумби, труби, панелі та аксесуари можна переставляти,
+                            Полиці, тумби, труби гардеробни, панелі та аксесуари можна переставляти,
                             додавати або знімати без демонтажу стійок. Це дозволяє
                             змінювати планування гардеробу хоч кожен рік під нові задачі.
                         </p>
