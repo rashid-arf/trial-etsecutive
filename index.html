@@ -811,54 +811,132 @@
 
 
 
-        /* CTA FOOTER */
+        /* ===== eTSecutive CTA ===== */
 
-        .cta-final {
-            border-radius: 24px;
-            padding: 20px 20px 18px;
-            background: linear-gradient(135deg, #16a34a, #22c55e);
-            color: #f9fafb;
+        .etse-cta {
+            margin-top: 40px;
+        }
+
+        .etse-cta__inner {
             display: flex;
             flex-wrap: wrap;
-            align-items: center;
+            gap: 20px;
             justify-content: space-between;
-            gap: 16px;
-            margin-top: 12px;
+            align-items: stretch;
+
+            padding: 26px 30px;
+            border-radius: 28px;
+            background: linear-gradient(135deg, #16a34a, #22c55e);
+            box-shadow: 0 22px 40px rgba(22, 163, 74, 0.45);
+            color: #f9fafb;
         }
-        .cta-final h2 {
-            margin: 0 0 4px;
-            font-size: 20px;
+
+        .etse-cta__left {
+            flex: 1 1 260px;
+            min-width: 260px;
+            max-width: 520px;
         }
-        .cta-final p {
-            margin: 0;
-            font-size: 13px;
-            opacity: 0.95;
+
+        .etse-cta__title {
+            margin: 0 0 8px;
+            font-size: 24px;
+            line-height: 1.25;
         }
-        .cta-actions {
+
+        .etse-cta__text {
+            margin: 0 0 18px;
+            font-size: 14px;
+            opacity: 0.96;
+        }
+
+        .etse-cta__actions {
             display: flex;
-            gap: 8px;
             flex-wrap: wrap;
+            gap: 10px;
         }
-        .btn-cta {
+
+        .etse-cta__btn {
             border-radius: 999px;
+            padding: 10px 18px;
+            font-size: 13px;
+            font-weight: 600;
             border: none;
             cursor: pointer;
-            padding: 9px 14px;
-            font-size: 13px;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-        }
-        .btn-cta.primary {
-            background: #f9fafb;
-            color: #16a34a;
-        }
-        .btn-cta.ghost {
-            background: rgba(15, 23, 42, 0.12);
-            color: #ecfdf5;
-            border: 1px solid rgba(226, 232, 240, 0.4);
+            transition: transform 0.15s ease, box-shadow 0.15s ease,
+            background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
         }
 
+        .etse-cta__btn--primary {
+            background: #f9fafb;
+            color: #15803d;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);
+        }
+
+        .etse-cta__btn--primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 16px 35px rgba(15, 23, 42, 0.26);
+        }
+
+        .etse-cta__btn--ghost {
+            background: rgba(15, 23, 42, 0.08);
+            color: #ecfdf5;
+            border: 1px solid rgba(226, 232, 240, 0.6);
+        }
+
+        .etse-cta__btn--ghost:hover {
+            background: rgba(15, 23, 42, 0.16);
+        }
+
+        /* Контактна картка справа */
+
+        .etse-cta__contacts {
+            flex: 0 0 280px;
+            max-width: 320px;
+            padding: 16px 18px;
+            border-radius: 22px;
+            background: rgba(6, 19, 34, 0.92);
+            box-shadow: 0 18px 30px rgba(15, 23, 42, 0.4);
+            font-size: 13px;
+        }
+
+        .etse-cta__contacts-row + .etse-cta__contacts-row {
+            margin-top: 10px;
+        }
+
+        .etse-cta__contacts-label {
+            opacity: 0.7;
+            margin-bottom: 2px;
+        }
+
+        .etse-cta__contacts-value {
+            font-weight: 500;
+        }
+
+        /* Мобільна адаптація */
+
+        @media (max-width: 768px) {
+            .etse-cta__inner {
+                padding: 20px 18px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .etse-cta__title {
+                font-size: 20px;
+            }
+
+            .etse-cta__contacts {
+                width: 100%;
+                max-width: none;
+            }
+
+            .etse-cta__actions {
+                justify-content: flex-start;
+            }
+        }
         /* RESPONSIVE */
 
         @media (max-width: 900px) {
@@ -3045,18 +3123,46 @@
 
 
     <!-- FINAL CTA -->
-    <section id="contact">
-        <div class="cta-final">
-            <div>
-                <h2>Готові зібрати свою систему eTSecutive?</h2>
-                <p>Надішліть розміри стіни та побажання — ми допоможемо з розрахунком і підбором конфігурації.</p>
+    <section id="contact" class="etse-cta">
+        <div class="etse-cta__inner">
+            <div class="etse-cta__left">
+                <h2 class="etse-cta__title">Готові зібрати свою систему eTSecutive?</h2>
+                <p class="etse-cta__text">
+                    Надішліть розміри стіни та побажання — ми допоможемо з розрахунком і
+                    підбором конфігурації TS-603.
+                </p>
+                <div class="etse-cta__actions">
+
+                    <a
+                            class="etse-cta__btn etse-cta__btn--primary"
+                            href="/TRIAL-eTSecutive-UA.pdf"
+                            download
+                    >
+                        Завантажити PDF про систему TS-603
+                    </a>
+
+                </div>
             </div>
-            <div class="cta-actions">
-                <button class="btn-cta primary">Звʼязатися з менеджером MT</button>
-                <button class="btn-cta ghost">Скачати PDF про систему TS-603</button>
+
+            <div class="etse-cta__contacts">
+                <div class="etse-cta__contacts-row">
+                    <div class="etse-cta__contacts-label">Телефон</div>
+                    <div class="etse-cta__contacts-value">+380800304404</div>
+                </div>
+                <div class="etse-cta__contacts-row">
+                    <div class="etse-cta__contacts-label">Адреса</div>
+                    <div class="etse-cta__contacts-value">
+                        м. Київ, вул. Кирилівська, 102
+                    </div>
+                </div>
+                <div class="etse-cta__contacts-row">
+                    <div class="etse-cta__contacts-label">Email</div>
+                    <div class="etse-cta__contacts-value">info@mt.ua</div>
+                </div>
             </div>
         </div>
     </section>
+
 
 </div>
 
