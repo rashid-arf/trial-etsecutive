@@ -1545,6 +1545,12 @@
                                 <button type="button" class="btn-white" id="toClientModeBtn">Режим клієнта</button>
                                 <button type="button" class="btn-white" id="exportCsvBtn">CSV</button>
                             </div>
+                            <div class="results-actions">
+                                <button type="button" class="btn-primary" id="sendToTelegramBtn">
+                                    Надіслати прорахунок
+                                </button>
+                            </div>
+
                         </div>
 
                         <div style="max-height: 320px; overflow:auto; margin-top: 4px;">
@@ -3014,6 +3020,92 @@
         });
     });
 </script>
+<script>
+    // 🔐 тот же секрет, что TELEGRAM_FORM_SECRET в Next.js (.env)
+    const TELEGRAM_FORM_SECRET = "MT_SYSTEMS"; // подставь ровно ту строку, что в .env
+
+    // Берём текущий режим из переменной currentMode, которую мы уже ведём в калькуляторе
+    function getCurrentModeLabel() {
+        return (currentMode === "manager") ? "менеджер" : "клієнт";
+    }
+
+    function collectCalculationSummaryForTelegram() {
+        const heightEl   = document.getElementById("height");
+        const widthEl    = document.getElementById("wallWidth");
+        const sectionsEl = document.getElementById("sections");
+
+        const height   = heightEl   ? (heightEl.value || "-")   : "-";
+        const width    = widthEl    ? (widthEl.value || "-")    : "-";
+        const sections = sectionsEl ? (sectionsEl.value || "-") : "-";
+
+        // Берём сумму из уже посчитанных полей
+        const totalEurEl = document.getElementById("clientTotalEur") || document.getElementById("totalEurCell");
+        const totalUahEl = document.getElementById("clientTotalUah") || document.getElementById("totalUahCell");
+
+        const totalEur = totalEurEl ? totalEurEl.textContent.trim() : "-";
+        const totalUah = totalUahEl ? totalUahEl.textContent.trim() : "-";
+
+        const summaryTextEl = document.getElementById("summaryText");
+        const summaryText = summaryTextEl ? summaryTextEl.innerText.trim() : "";
+
+        return { height, width, sections, totalEur, totalUah, summaryText };
+    }
+
+    async function sendCalculationToTelegram() {
+        if (!lastCalc) {
+            alert("Спочатку зробіть розрахунок.");
+            return;
+        }
+
+        const mode = getCurrentModeLabel();
+        const data = collectCalculationSummaryForTelegram();
+
+        const text = [
+            "📨 Нова заявка: TRIAL eTSecutive",
+            "",
+            `🔁 Режим: *${mode}*`,
+            "",
+            `📐 Висота системи: *${data.height}* мм`,
+            `📏 Ширина стіни: *${data.width}* мм`,
+            `📦 Кількість секцій: *${data.sections}*`,
+            "",
+            `💰 Орієнтовна вартість: *${data.totalEur}* € або *${data.totalUah}* грн`,
+            "",
+            data.summaryText ? "🧾 Підсумок:\n" + data.summaryText : ""
+        ].join("\n");
+
+        try {
+            const res = await fetch("https://mt-volpato.vercel.app/api/telegram", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    secret: TELEGRAM_FORM_SECRET,
+                    text
+                })
+            });
+
+            const json = await res.json().catch(() => ({}));
+
+            if (!res.ok || json.ok === false) {
+                console.error("Telegram error:", json);
+                alert("Не вдалось надіслати заявку. Спробуй ще раз.");
+                return;
+            }
+
+            alert("Заявку надіслано в MT × Systems ✅");
+        } catch (e) {
+            console.error(e);
+            alert("Сталася помилка під час відправки.");
+        }
+    }
+
+    // навешиваем обработчик (весь DOM уже загружен, скрипт в конце файла)
+    const sendBtn = document.getElementById("sendToTelegramBtn");
+    if (sendBtn) {
+        sendBtn.addEventListener("click", sendCalculationToTelegram);
+    }
+</script>
+
 
 </body>
 </html>
